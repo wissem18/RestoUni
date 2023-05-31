@@ -9,7 +9,7 @@ import {v4 as uuid} from 'uuid';
 @Entity()
 export class Student extends TimeStampEntity{
   @PrimaryGeneratedColumn("uuid")
-  id: String;
+  id: string;
 
   @Column({ length: 50 })
   firstname: string;
