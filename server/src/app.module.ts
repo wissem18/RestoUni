@@ -12,6 +12,7 @@ dotenv.config();
 @Module({
   imports: [
     TypeOrmModule.forRoot({
+
       type: 'mysql',
       host: "localhost",
       port: 3306,
@@ -29,4 +30,6 @@ dotenv.config();
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+
+}
