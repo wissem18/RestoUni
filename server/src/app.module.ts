@@ -20,6 +20,7 @@ dotenv.config();
       password: "",
       database: "webproject",
       entities: ["dist/**/*.entity{.ts,.js}"],
+      autoLoadEntities: true,
       synchronize: true,
     }),
     RestaurantModule,

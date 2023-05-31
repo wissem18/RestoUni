@@ -1,8 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Col } from 'react-bootstrap';
+import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
+import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+
 
 @Entity()
-export class Student {
+export class Student extends TimeStampEntity{
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -11,9 +15,15 @@ export class Student {
 
   @Column({ length: 50 })
   lastname: string;
+   
+  @Column()
+  cardID: number 
 
   @Column({ length: 50 })
-  email: string;  
+  email: string;
+
+  @Column({})
+   password:string;
 
   @Column()
   age: number;
@@ -23,5 +33,7 @@ export class Student {
 
   @Column()
   phone: number;
-
+  
+  @ManyToOne(()=>Restaurant , (Restaurant)=>Restaurant.Students)
+  restaurant:Restaurant;
 }
