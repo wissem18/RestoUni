@@ -26,14 +26,6 @@ export class Student extends TimeStampEntity{
   @Column()
    password:string;
 
-  @Column()
-  age: number;
-
-  @Column()
-  adress: string;
-
-  @Column()
-  phone: number;
   
   @ManyToOne(()=>Restaurant , (Restaurant)=>Restaurant.Students)
   restaurant:Restaurant;
