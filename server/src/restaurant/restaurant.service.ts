@@ -5,7 +5,7 @@ import { Restaurant } from './entities/restaurant.entity';
 
 @Injectable()
 export class RestaurantService {
-  create(createRestaurantDto: CreateRestaurantDto) {
+ /* create(createRestaurantDto: CreateRestaurantDto) {
     return 'This action adds a new restaurant';
   }
 
@@ -23,5 +23,5 @@ export class RestaurantService {
 
   remove(id: number) {
     return `This action removes a #${id} restaurant`;
-  }
+  }*/
 }

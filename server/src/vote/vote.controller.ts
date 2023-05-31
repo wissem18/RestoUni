@@ -5,7 +5,7 @@ import { UpdateVoteDto } from './dto/update-vote.dto';
 
 @Controller('vote')
 export class VoteController {
-  constructor(private readonly voteService: VoteService) {}
+ /* constructor(private readonly voteService: VoteService) {}
 
   @Post()
   create(@Body() createVoteDto: CreateVoteDto,@Param("restaurantId") restaurantId: string) {
@@ -30,5 +30,5 @@ export class VoteController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.voteService.remove(id);
-  }
+  }*/
 }

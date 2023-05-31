@@ -7,7 +7,7 @@ import { Vote } from './entities/vote.entity';
 import { RestaurantService } from 'src/restaurant/restaurant.service';
 @Injectable()
 export class VoteService {
-  constructor(
+  /*constructor(
     @InjectRepository(Vote)
     private readonly voteRepository: Repository<Vote>,
 
@@ -64,5 +64,5 @@ export class VoteService {
     }
 
     await this.voteRepository.remove(vote);
-  }
+  }*/
 }
