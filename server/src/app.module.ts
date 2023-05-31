@@ -1,27 +1,32 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
-import * as dotenv from 'dotenv'
-import {ConfigModule, ConfigService} from "@nestjs/config";
+import { RestaurantModule } from './restaurant/restaurant.module';
+import { StudentModule } from './student/student.module';
+import { MenuModule } from './menu/menu.module';
+import { VoteModule } from './vote/vote.module';
+import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
   imports: [
     TypeOrmModule.forRoot({
 
       type: 'mysql',
-      host: process.env.DB_HOST,
+      host: "localhost",
       port: 3308,
       username: "root",
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      password: "",
+      database: "tpnest",
       entities: ["dist/**/*.entity{.ts,.js}"],
+      autoLoadEntities: true,
       synchronize: true,
     }),
-      ConfigModule.forRoot({
-            isGlobal: true
-
-      })
+    RestaurantModule,
+    StudentModule,
+    MenuModule,
+    VoteModule
   ],
   controllers: [AppController],
   providers: [AppService],
