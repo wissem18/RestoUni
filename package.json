@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "react-bootstrap": "^2.7.4"
+    "react-bootstrap": "^2.7.4",
+    "@nestjs/config": "^2.3.2",
+    "dotenv": "^16.1.1"
   }
 }
