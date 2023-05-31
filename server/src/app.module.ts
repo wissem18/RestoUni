@@ -12,7 +12,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
       username: 'root',
       password: '',
       database: 'tpnest',
-      entities: [],
+      entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
     })
   ],
