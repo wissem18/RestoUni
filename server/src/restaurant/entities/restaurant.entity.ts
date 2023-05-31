@@ -1,11 +1,13 @@
-import { TimeStampedEntity } from "../../timestamped/timestamped.entity";
+import { TimeStampEntity } from "src/timestamp/timpestamp.entity";
 import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Exclude } from "class-transformer";
 import {v4 as uuid} from "uuid";
 import { Student } from "src/student/entities/student.entity";
+import { Menu } from "src/menu/entities/menu.entity";
+import { Vote } from "src/vote/entities/vote.entity";
 
 @Entity("Restaurants")
-export class Restaurant extends TimeStampedEntity {
+export class Restaurant extends TimeStampEntity {
     @PrimaryGeneratedColumn()
     id: uuid;
     
@@ -25,9 +27,18 @@ export class Restaurant extends TimeStampedEntity {
     @Column({ type: "number"})
     telephone: number;
 
-    @OneToMany(() => Restaurant, (Student) => Student.restaurant,
+    @OneToMany(() => Student, (Student) => Student.restaurant,
     { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE"})
     @JoinTable()
     Students: Student[];
 
+    @OneToMany(() => Menu, (Menu) => Menu.restaurant,
+    { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE"})
+    @JoinTable()
+    Menus: Menu[];
+
+    @OneToMany(() => Vote, (Vote) => Vote.restaurant,
+    { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE"})
+    @JoinTable()
+    Votes: Vote[];
 }
