@@ -7,8 +7,8 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTabl
 import {v4 as uuid} from 'uuid';
 @Entity()
 export class Student extends TimeStampEntity{
-  @PrimaryGeneratedColumn()
-  id: uuid;
+  @PrimaryGeneratedColumn("uuid")
+  id: String;
 
   @Column({ length: 50 })
   firstname: string;

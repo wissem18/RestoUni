@@ -7,8 +7,8 @@ import { Student } from "../../student/entities/student.entity";
 
 @Entity()
 export class Vote extends TimeStampEntity {
-    @PrimaryGeneratedColumn()
-    id: uuid;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
     
     @Column({ type: "varchar", length: 64 })
     description: string;

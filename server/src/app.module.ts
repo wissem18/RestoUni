@@ -22,7 +22,7 @@ dotenv.config();
       database: "webproject",
       entities: ["dist/**/*.entity{.ts,.js}"],
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     }),
     RestaurantModule,
     StudentModule,

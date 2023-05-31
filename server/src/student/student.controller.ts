@@ -19,7 +19,7 @@ export class StudentController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.studentService.findOne(+id);
+    return this.studentService.findOne(id);
   }
 
   @Patch(':id')
@@ -29,6 +29,6 @@ export class StudentController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.studentService.remove(+id);
+    return this.studentService.remove(id);
   }
 }
