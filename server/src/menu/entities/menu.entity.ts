@@ -13,10 +13,6 @@ export class Menu extends TimeStampEntity {
     plat: string;
     @Column()
     dessert: string;
-    @CreateDateColumn()
-    createdAt: Date;
-    @DeleteDateColumn()
-    deletedAt: Date;
 
     @ManyToOne(() => Restaurant, Restaurant => Restaurant.id)
     restaurant: Restaurant;
