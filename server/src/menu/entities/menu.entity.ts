@@ -1,10 +1,11 @@
 import {Column, CreateDateColumn, DeleteDateColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Entity, PrimaryColumn} from "typeorm";
 import {Restaurant} from "../../restaurant/entities/restaurant.entity";
+import {v4 as uuid} from "uuid";
 @Entity('menu')
 export class Menu {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: uuid;
     @Column()
     entrée: string;
     @Column()
