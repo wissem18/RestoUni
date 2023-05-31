@@ -1,5 +1,5 @@
 
-import { TimeStampEntity } from "src/timestamp/timpestamp.entity";
+import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
 import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Exclude } from "class-transformer";
 import {v4 as uuid} from "uuid";
@@ -9,8 +9,8 @@ import { Vote } from "src/vote/entities/vote.entity";
 
 @Entity("Restaurants")
 export class Restaurant extends TimeStampEntity {
-    @PrimaryGeneratedColumn()
-    id: uuid;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
     
     @Column({ type: "varchar", length: 64 })
     name: string;

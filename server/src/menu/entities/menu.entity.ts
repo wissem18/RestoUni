@@ -5,18 +5,14 @@ import {Restaurant} from "../../restaurant/entities/restaurant.entity";
 import {v4 as uuid} from "uuid";
 @Entity('menu')
 export class Menu extends TimeStampEntity {
-    @PrimaryGeneratedColumn()
-    id: uuid;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
     @Column()
     entrée: string;
     @Column()
     plat: string;
     @Column()
     dessert: string;
-    @CreateDateColumn()
-    createdAt: Date;
-    @DeleteDateColumn()
-    deletedAt: Date;
 
     @ManyToOne(() => Restaurant, Restaurant => Restaurant.id)
     restaurant: Restaurant;
