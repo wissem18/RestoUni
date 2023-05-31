@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { Restaurant } from './entities/restaurant.entity';
 
 @Injectable()
 export class RestaurantService {
@@ -12,7 +13,7 @@ export class RestaurantService {
     return `This action returns all restaurant`;
   }
 
-  findOne(id: number) {
+  async findOne(id: string) :Promise<Restaurant> {
     return `This action returns a #${id} restaurant`;
   }
 
