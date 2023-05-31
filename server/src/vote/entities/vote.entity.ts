@@ -23,10 +23,8 @@ export class Vote extends TimeStampEntity {
 
     @ManyToMany(
         () => Student,
-        (Student) => Student.votes,
-        { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE" }
+        (Student) => Student.Votes,
     )
-    @JoinTable({ name: "votes_students" })
     Students?: Student[];
     
 }
