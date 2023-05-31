@@ -64,5 +64,5 @@ export class VoteService {
     }
 
     await this.voteRepository.remove(vote);
-  }*/
+  }
 }
