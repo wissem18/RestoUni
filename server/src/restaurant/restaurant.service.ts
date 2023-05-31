@@ -1,6 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {Restaurant} from "./entities/restaurant.entity";
@@ -22,6 +23,7 @@ export class RestaurantService {
     return  this.RestaurantRepository.find();
   }
 
+
   findOne(id: string): Promise<Restaurant> {
     return this.RestaurantRepository.findOne({
       where: {
@@ -33,6 +35,7 @@ export class RestaurantService {
       }
       return Restaurant;
     });
+
   }
 
   update(id: string, updateRestaurantDto: UpdateRestaurantDto) {

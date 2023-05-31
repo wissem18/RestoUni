@@ -17,7 +17,7 @@ import { v4 as uuid } from 'uuid';
 @Controller('restaurant')
 @UseInterceptors(ClassSerializerInterceptor)
 export class RestaurantController {
-  constructor(private readonly restaurantService: RestaurantService) {}
+ /* constructor(private readonly restaurantService: RestaurantService) {}
 
   @Post()
   create(@Body() createRestaurantDto: CreateRestaurantDto) {
@@ -31,6 +31,7 @@ export class RestaurantController {
 
   @Get(':id')
   findOne(@Param('id') id: uuid) {
+
     return this.restaurantService.findOne(id);
   }
 
@@ -43,4 +44,5 @@ export class RestaurantController {
   remove(@Param('id') id: uuid) {
     return this.restaurantService.remove(id);
   }
+
 }
