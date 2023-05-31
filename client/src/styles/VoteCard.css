@@ -1,0 +1,132 @@
+.voting-card {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 300px;
+    width: 200px;
+    margin: 10px;
+}
+
+.voting-card-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.voting-card-description {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.voting-card-options {
+    margin-bottom: 20px;
+}
+
+.voting-card-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.voting-card-option input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    margin-right: 10px;
+    position: relative;
+}
+
+.checkbox-custom::before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: transparent;
+    border-radius: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.voting-card-option input[type="checkbox"]:checked~.checkbox-custom::before {
+    background-color: #4caf50;
+    opacity: 1;
+}
+
+.option-label {
+    font-size: 16px;
+}
+
+.voting-card-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.voting-card-button:hover {
+    background-color: #45a049;
+}
+.card {
+    height: 254px;
+    width: 190px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+    border-radius: 16px;
+    box-shadow: 0 0 20px 8px #d0d0d0;
+    overflow: hidden;
+}
+
+.card-image {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    background: #08e1c8;
+    background: linear-gradient(to top, #d1dbf3, #1c1f27);
+    
+}
+
+.card-description {
+    display: flex;
+    position: absolute;
+    gap: .5em;
+    flex-direction: column;
+    background-color: #08e1c8;
+    color: #212121;
+    height: 70%;
+    width: 100%;
+    bottom: 0;
+    border-radius: 16px;
+    transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    padding: 1rem;
+}
+
+.text-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.text-body {
+    font-size: 1rem;
+    line-height: 130%;
+}
+
+
+.card:hover .card-description {
+    transform: translateY(100%);
+}
