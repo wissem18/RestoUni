@@ -7,8 +7,7 @@ export class CreateMenuDto {
     plat: string;
     @IsNotEmpty()
     dessert: string;
-    @IsNotEmpty()
-    restaurantId: number;
+
 
 
 }
