@@ -48,7 +48,7 @@ const Header = () => {
         </li>
         <li>
           <NavLink to={"/login"}><button>
-            <span class="box">
+            <span className="box">
               Hover!
             </span>
           </button></NavLink>
@@ -98,8 +98,9 @@ const Header = () => {
                   <NavLink to={"/contact"}>Contact</NavLink>
                 </li>
                 <li>
-                  <NavLink to={"/login"}><button className="box-button">
-                    <span class="box">
+                  <NavLink to={"/login"}>
+                    <button className="box-button">
+                    <span className="box">
                       Log In
                     </span>
                   </button></NavLink>
