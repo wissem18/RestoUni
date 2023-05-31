@@ -1,8 +1,8 @@
 import { TimeStampEntity } from '../../timestamp/timpestamp.entity';
 import { Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Vote } from '../../vote/entities/vote.entity';
+import { Vote } from 'src/vote/entities/vote.entity';
 @Entity()
-export class Option extends TimeStampEntity{
+export class Option {
 @PrimaryGeneratedColumn()
 id: number;
 
