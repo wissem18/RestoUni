@@ -9,10 +9,10 @@ import { Menu } from './entities/menu.entity';
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
-  /*@Post(":restaurantId")
+  @Post(":restaurantId")
   create(@Param('restaurantId') restaurantId: string, @Body() createMenuDto: CreateMenuDto) {
     return this.menuService.create(restaurantId, createMenuDto);
-  }*/
+  }
 
   @Get(':restaurantId')
   findAll(@Param("restaurantId") restaurantId: string): Promise<Menu[]> {

@@ -18,7 +18,7 @@ export class MenuService {
     private readonly RestaurantService: RestaurantService
     ) {}
 
-   /* create(restaurantId:string, createMenuDto: CreateMenuDto): Promise<Menu> {
+    create(restaurantId:string, createMenuDto: CreateMenuDto): Promise<Menu> {
       // check if the restaurant exists
       return this.RestaurantService.findOne(restaurantId).then((restaurant) => {  
         if(!restaurant) { 
@@ -30,7 +30,7 @@ export class MenuService {
         return this.MenuRepository.save(menu);
       });
     }
-*/
+
     findAll(restaurantId: string): Promise<Menu[]> {
       return this.MenuRepository.find({
         where: {
