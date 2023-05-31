@@ -5,7 +5,7 @@ import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
 @Controller('restaurant')
 export class RestaurantController {
- /* constructor(private readonly restaurantService: RestaurantService) {}
+ constructor(private readonly restaurantService: RestaurantService) {}
 
   @Post()
   create(@Body() createRestaurantDto: CreateRestaurantDto) {
@@ -30,5 +30,5 @@ export class RestaurantController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.restaurantService.remove(+id);
-  }*/
+  }
 }

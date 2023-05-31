@@ -21,27 +21,25 @@ export class VoteService {
       if(!restaurant) { 
         throw new NotFoundException("Restaurant not found");
       }
-      // create the menu
-      const menu = this.voteRepository.create(VoteDto);
-      menu.restaurant = restaurant;
-      return this.voteRepository.save(menu);
+     
+      const vote = this.voteRepository.create(VoteDto);
+      vote.restaurant = restaurant;
+      return this.voteRepository.save(vote);
     });
   }
 
   async findAll(restaurantID:string): Promise<Vote[]> {
     return await this.voteRepository.find({
       where : {restaurant : {id : restaurantID}},
-      relations : {Options: true} 
+      relations : {Options: true, 
+        voteStudents:true
+      } 
     },
     );
   }
 
-  async findOne(id: string): Promise<Vote> {
-    const vote =await this.voteRepository.findOne({where : {id : id}});
-    if(!vote){
-      throw new NotFoundException("le vote d'id ${id} n'existe pas")
-    }
-    return vote;
+  async findOne(restaurantID:string,id: string): Promise<Vote> {
+    
   }
 
   async update(id: string, updateVoteDto: UpdateVoteDto): Promise<Vote> {
