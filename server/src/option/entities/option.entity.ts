@@ -3,8 +3,8 @@ import { Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "ty
 import { Vote } from 'src/vote/entities/vote.entity';
 @Entity()
 export class Option {
-@PrimaryGeneratedColumn()
-id: number;
+@PrimaryGeneratedColumn("uuid")
+id: string;
 
 @Column()
 description:string;

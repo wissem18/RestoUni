@@ -4,6 +4,7 @@ import {v4 as uuid} from "uuid";
 import { Option } from "../../option/entities/option.entity";
 import { Restaurant } from "../../restaurant/entities/restaurant.entity";
 import { Student } from "../../student/entities/student.entity";
+import { VoteStudent } from "src/vote-student/entities/vote-student.entity";
 
 @Entity()
 export class Vote extends TimeStampEntity {
@@ -21,10 +22,7 @@ export class Vote extends TimeStampEntity {
     @ManyToOne(()=>Restaurant , (Restaurant)=>Restaurant.Students)
     restaurant:Restaurant;
 
-    @ManyToMany(
-        () => Student,
-        (Student) => Student.Votes,
-    )
-    Students?: Student[];
+    @OneToMany(() => VoteStudent, (voteStudent) => voteStudent.student)
+    voteStudents: VoteStudent[];
     
 }

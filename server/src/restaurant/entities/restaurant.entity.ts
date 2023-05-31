@@ -9,8 +9,8 @@ import { Vote } from "src/vote/entities/vote.entity";
 
 @Entity("Restaurants")
 export class Restaurant extends TimeStampEntity {
-    @PrimaryGeneratedColumn()
-    id: uuid;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
     
     @Column({ type: "varchar", length: 64 })
     name: string;
