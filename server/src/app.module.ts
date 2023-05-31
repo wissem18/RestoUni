@@ -7,6 +7,7 @@ import { RestaurantModule } from './restaurant/restaurant.module';
 import { StudentModule } from './student/student.module';
 import { MenuModule } from './menu/menu.module';
 import { VoteModule } from './vote/vote.module';
+import { OptionModule } from './option/option.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
@@ -26,7 +27,8 @@ dotenv.config();
     RestaurantModule,
     StudentModule,
     MenuModule,
-    VoteModule
+    VoteModule,
+    OptionModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,14 +1,15 @@
 /* eslint-disable prettier/prettier */
-import { Col } from 'react-bootstrap';
+import { Exclude } from 'class-transformer';
 import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
 import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Vote } from 'src/vote/entities/vote.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import {v4 as uuid} from 'uuid';
 @Entity()
 export class Student extends TimeStampEntity{
   @PrimaryGeneratedColumn()
   id: uuid;
-  
+
   @Column({ length: 50 })
   firstname: string;
 
@@ -20,8 +21,9 @@ export class Student extends TimeStampEntity{
 
   @Column({ length: 50 })
   email: string;
-
-  @Column({})
+  
+  @Exclude()
+  @Column()
    password:string;
 
   @Column()
@@ -35,4 +37,11 @@ export class Student extends TimeStampEntity{
   
   @ManyToOne(()=>Restaurant , (Restaurant)=>Restaurant.Students)
   restaurant:Restaurant;
+  @ManyToMany(
+    () => Vote,
+    (Vote) => Vote.Students,
+    { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE" }
+)
+@JoinTable({ name: "student_votes" })
+Votes?: Vote[];
 }
