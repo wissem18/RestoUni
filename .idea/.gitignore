@@ -4,5 +4,5 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 
-node_modules
+/node_modules/
 .env
