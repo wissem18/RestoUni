@@ -8,6 +8,7 @@ import { StudentModule } from './student/student.module';
 import { MenuModule } from './menu/menu.module';
 import { VoteModule } from './vote/vote.module';
 import { OptionModule } from './option/option.module';
+import { VoteStudentModule } from './vote-student/vote-student.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
@@ -22,13 +23,14 @@ dotenv.config();
       database: "webproject",
       entities: ["dist/**/*.entity{.ts,.js}"],
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     }),
     RestaurantModule,
     StudentModule,
     MenuModule,
     VoteModule,
-    OptionModule
+    OptionModule,
+    VoteStudentModule
   ],
   controllers: [AppController],
   providers: [AppService],
