@@ -103,8 +103,7 @@ const Header = () => {
                     <span className="box">
                       Log In
                     </span>
-                  </button>
-                  </NavLink>
+                  </button></NavLink>
                 </li>
 
               </ul>

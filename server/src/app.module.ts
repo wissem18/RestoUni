@@ -16,10 +16,10 @@ dotenv.config();
 
       type: 'mysql',
       host: "localhost",
-      port: 3308,
+      port: 3306,
       username: "root",
       password: "",
-      database: "tpnest",
+      database: "webproject",
       entities: ["dist/**/*.entity{.ts,.js}"],
       autoLoadEntities: true,
       synchronize: true,

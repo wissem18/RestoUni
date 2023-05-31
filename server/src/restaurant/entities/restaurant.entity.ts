@@ -1,6 +1,5 @@
 
 import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
-import { TimeStampEntity } from "src/timestamp/timpestamp.entity";
 import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Exclude } from "class-transformer";
 import {v4 as uuid} from "uuid";
@@ -26,7 +25,7 @@ export class Restaurant extends TimeStampEntity {
     @Column({ type: "varchar", length: 64 })
     localisation: string;
 
-    @Column({ type: "number"})
+    @Column()
     telephone: number;
 
     @OneToMany(() => Student, (Student) => Student.restaurant,
