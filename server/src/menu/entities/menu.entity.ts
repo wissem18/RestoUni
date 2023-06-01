@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {Column, CreateDateColumn, DeleteDateColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Entity, PrimaryColumn} from "typeorm";
 import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
