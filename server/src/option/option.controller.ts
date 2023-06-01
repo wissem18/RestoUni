@@ -7,9 +7,9 @@ import { UpdateOptionDto } from './dto/update-option.dto';
 export class OptionController {
   constructor(private readonly optionService: OptionService) {}
 
-  @Post()
-  create(@Body() createOptionDto: CreateOptionDto) {
-    return this.optionService.create(createOptionDto);
+  @Post(":id")
+  create(@Body() createOptionDto: CreateOptionDto, @Param('id') id: string) {
+    return this.optionService.create(id,createOptionDto);
   }
 
   @Get()

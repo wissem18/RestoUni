@@ -17,7 +17,7 @@ import { v4 as uuid } from 'uuid';
 @Controller('restaurant')
 @UseInterceptors(ClassSerializerInterceptor)
 export class RestaurantController {
-  constructor(private readonly restaurantService: RestaurantService) {}
+ constructor(private readonly restaurantService: RestaurantService) {}
 
   @Post()
   create(@Body() createRestaurantDto: CreateRestaurantDto) {
