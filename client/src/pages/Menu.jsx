@@ -52,8 +52,6 @@ const Menu = (props) => {
                             <p className="title">
                               <strong>Spaguetti Bolognese</strong>
                             </p>
-
-
                           </div>
                           <p className="card-footer">
                             11:30 &nbsp; | &nbsp; 13:30
