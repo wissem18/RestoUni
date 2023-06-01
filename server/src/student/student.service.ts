@@ -44,6 +44,9 @@ export class StudentService {
   remove(id: string) {
     return this.StudentRepository.delete(id);
   }
+  findByIdentifier(identifier:number){
+    return this.StudentRepository.findOne({ where: { cardID :identifier}})
+  }
   async Vote(studentId: string, voteId: string, optionId: string): Promise<void> {
     const student = await this.StudentRepository.findOne({where:{id:Equal(studentId)}});
 

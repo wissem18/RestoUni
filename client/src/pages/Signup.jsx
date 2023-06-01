@@ -1,14 +1,75 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from "../components/Layout";
 import { NavLink } from "react-router-dom";
+import axios from 'axios';
 
 import "../styles/Login.css";
 
 function Signup() {
     const [check,setCheck]=React.useState(true);
+    const [firstname,setFirstName]=useState(null);
+    const [lastname,setLastName]=useState(null);
+    const [email,setEmail]=useState(null);
+    const [nins,setNins]=useState(null);
+    const [password,setPassword]=useState(null);
+    const [error, setError] = useState(null);
+    const firstNameHandler=(value)=>{
+        setFirstName(value);
+    }
+    const lastnameHandler=(value)=>{
+        setLastName(value)
+    }
+    const emailHandler=(value)=>{
+        setEmail(value)
+    }
+    const ninshandler=(value)=>{
+        setNins(value);
+    }
+    const passwordHandler=(value)=>{
+        setPassword(value);
+    }
     const handleCheckboxChange = () => {
         setCheck((value) => value ? false : true);
         console.log(check)
+    }
+    const signupStudentService=async (e)=>{
+        e.preventDefault();
+        const stringRegex = /^[a-zA-Z]+$/;
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        const identifierRegex = /^(?:2[0-9]{6}|[3-4][0-9]{6}|5000000)$/;
+        if(!stringRegex.test(firstname)){
+            setError("firstname must be only caracters");
+        }
+        else if (!stringRegex.test(lastname)) {
+            setError("lastname must be only caracters");
+        }
+        else if (!emailRegex.test(email)) {
+            setError("email formed incorrectly");
+        }
+        else if (!identifierRegex.test(nins)) {
+            setError("firstname must be only caracters");
+        }
+        else {
+            try {
+                const response = await axios.post('http://localhost:3006/student', {
+                    "firstname": firstname,
+                    "lastname": lastname,
+                    "password": password,
+                    "cardID": nins,
+                    "email": email,
+                    
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }},);
+                console.log(response.data); 
+                window.location.href ='http://localhost:3000/login'
+            } catch (error) {
+                console.error(error);
+            }
+        }
+       
+
     }
     return (
         <Layout>
@@ -23,26 +84,26 @@ function Signup() {
                     />
                     <span className="slider"></span>
                 </label>
-                {!check ? (<><p className="title">Student SignUp</p><form className="form">
+                {!check ? (<><p className="title">Student SignUp</p><form className="form" onSubmit={(e)=>signupStudentService(e)}>
                     <div className="input-group">
                         <label htmlFor="firstName">First name</label>
-                        <input type="text" name="firstName" id="firstName" placeholder="" />
+                        <input type="text" name="firstName" id="firstName" placeholder="" required onChange={(e) => firstNameHandler(e.target.value)} />
                     </div>
                     <div className="input-group">
                         <label htmlFor="lastName">Last name</label>
-                        <input type="text" name="lastName" id="lastName" placeholder="" />
+                        <input type="text" name="lastName" id="lastName" placeholder="" required onChange={(e) => lastnameHandler(e.target.value)} />
                     </div>
                     <div className="input-group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" name="email" id="email" placeholder="" />
+                        <input type="email" name="email" id="email" placeholder="" required onChange={(e) => emailHandler(e.target.value)} />
                     </div>
                     <div className="input-group">
                         <label htmlFor="Nins">N inscription</label>
-                        <input type="number" name="Nins" id="Nins" placeholder="" />
+                        <input type="number" name="Nins" id="Nins" placeholder="" required onChange={(e) => ninshandler(e.target.value)} />
                     </div>
                     <div className="input-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="" />
+                        <input type="password" name="password" id="password" placeholder="" required onChange={(e) => passwordHandler(e.target.value)} />
                     </div>
                     <br />
                     <button className="sign">Sign up</button>

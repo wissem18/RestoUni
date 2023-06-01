@@ -14,7 +14,7 @@ export class MenuController {
     return this.menuService.create(restaurantId, createMenuDto);
   }
 
-  @Get(':restaurantId')
+  @Get('/restaurant/:restaurantId')
   findAll(@Param("restaurantId") restaurantId: string): Promise<Menu[]> {
     return this.menuService.findAll(restaurantId);
   }
