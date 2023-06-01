@@ -1,8 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from 'src/vote/entities/vote.entity';
+
 import { VoteService } from 'src/vote/vote.service';
 import {Equal, Repository} from 'typeorm';
+
 import { CreateOptionDto } from './dto/create-option.dto';
 import { UpdateOptionDto } from './dto/update-option.dto';
 import {Option } from 'src/option/entities/option.entity'
@@ -12,6 +15,7 @@ export class OptionService {
   constructor(
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
+
     @Inject(VoteService)
     private readonly voteService: VoteService
   ) { }
@@ -20,6 +24,7 @@ export class OptionService {
     // check if the vote exists
     return this.voteService.findOne(voteId).then((vote) => {  
       if(!vote) { 
+
         throw new NotFoundException("Vote not found");
       }
       // create the option
