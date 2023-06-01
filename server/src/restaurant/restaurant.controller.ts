@@ -13,6 +13,7 @@ import { RestaurantService } from './restaurant.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { v4 as uuid } from 'uuid';
+import {Menu} from "../menu/entities/menu.entity";
 
 @Controller('restaurant')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -35,14 +36,20 @@ export class RestaurantController {
     return this.restaurantService.findOne(id);
   }
 
+
+
   @Patch(':id')
   update(@Param('id') id: uuid, @Body() updateRestaurantDto: UpdateRestaurantDto) {
     return this.restaurantService.update(id, updateRestaurantDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: uuid) {
+
+
+  remove(@Param('id') id: string) {
     return this.restaurantService.remove(id);
   }
 
+
 }
+

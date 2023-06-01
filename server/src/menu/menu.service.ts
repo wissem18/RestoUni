@@ -1,10 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {Inject, Injectable, NotFoundException} from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {Equal, Repository} from 'typeorm';
 import { Menu } from './entities/menu.entity';
 import { RestaurantService } from 'src/restaurant/restaurant.service';
+import {UpdateStudentDto} from "../student/dto/update-student.dto";
 
 
 @Injectable()
@@ -22,7 +23,7 @@ export class MenuService {
       // check if the restaurant exists
       return this.RestaurantService.findOne(restaurantId).then((restaurant) => {  
         if(!restaurant) { 
-          throw new Error("Restaurant not found");
+          throw new NotFoundException("Restaurant not found");
         }
         // create the menu
         const menu = this.MenuRepository.create(createMenuDto);
@@ -41,29 +42,42 @@ export class MenuService {
       });
     }
 
-
-
-    findOne(id: string): Promise<Menu> {
-    return this.MenuRepository.findOne({
-      where: {
-        id: id
-      }
-    }).then(Menu => {
-      if(!Menu){
-        throw new Error("Menu not found");
-      }
-      return Menu;
-    });
-  }
-
-  
-  update(id: string, updateMenuDto: UpdateMenuDto) {
-    return this.MenuRepository.update(id, updateMenuDto);
+  async findOne(id: string, restaurantId: string) {
+    const restaurant = await this.RestaurantService.findOne(restaurantId);
+   if(!restaurant) {
+      throw new NotFoundException("Restaurant not found");
+    }
+    return await this.MenuRepository.findOne({
+      where : {restaurant : {id : restaurantId } , id : id },
+    }).then(menu => {
+          if(!menu) {
+            throw new NotFoundException("Menu not found");
+          }
+          return menu;
+        }
+    );
   }
 
 
-  remove(id: string) {
-    return this.MenuRepository.delete(id);
+
+  async  update(restaurantid : string ,  id: string, updateMenuDto: UpdateMenuDto) {
+
+    const menu = await this.findOne(restaurantid , id);
+
+    if(!menu) {
+      throw new NotFoundException("Menu not found");
+    }
+    return this.MenuRepository.update(menu.id,updateMenuDto);
+  }
+
+
+  async  remove(restaurantid : string ,  id: string) {
+
+    const menu = await this.findOne(restaurantid , id);
+    if(!menu) {
+      throw new NotFoundException("Menu not found");
+    }
+    return this.MenuRepository.delete(menu.id);
   }
 }
 

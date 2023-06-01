@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  ClassSerializerInterceptor
+} from '@nestjs/common';
 import { VoteStudentService } from './vote-student.service';
 import { CreateVoteStudentDto } from './dto/create-vote-student.dto';
 import { UpdateVoteStudentDto } from './dto/update-vote-student.dto';
 
 @Controller('vote-student')
+@UseInterceptors(ClassSerializerInterceptor)
 export class VoteStudentController {
   constructor(private readonly voteStudentService: VoteStudentService) {}
 
-  @Post()
-  create(@Body() createVoteStudentDto: CreateVoteStudentDto) {
-    return this.voteStudentService.create(createVoteStudentDto);
+  @Post(':restaurantId/:studentId/:voteId')
+  create(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string,
+         @Body() optionId: string) {
+    return this.voteStudentService.create(voteId,  studentId, optionId, restaurantId);
   }
 
-  @Get()
-  findAll() {
-    return this.voteStudentService.findAll();
+  @Get(':restaurantId/:studentId/:voteId')
+  findOne(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string) {
+    return this.voteStudentService.findOne( voteId, studentId,restaurantId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.voteStudentService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVoteStudentDto: UpdateVoteStudentDto) {
-    return this.voteStudentService.update(+id, updateVoteStudentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.voteStudentService.remove(+id);
-  }
 }

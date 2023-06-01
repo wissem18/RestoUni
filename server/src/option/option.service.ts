@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from 'src/vote/entities/vote.entity';
 import { VoteService } from 'src/vote/vote.service';
-import { Repository } from 'typeorm';
+import {Equal, Repository} from 'typeorm';
 import { CreateOptionDto } from './dto/create-option.dto';
 import { UpdateOptionDto } from './dto/update-option.dto';
 import {Option } from 'src/option/entities/option.entity'
@@ -12,8 +12,7 @@ export class OptionService {
   constructor(
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
-
-    @Inject(Vote)
+    @Inject(VoteService)
     private readonly voteService: VoteService
   ) { }
 
@@ -21,7 +20,7 @@ export class OptionService {
     // check if the vote exists
     return this.voteService.findOne(voteId).then((vote) => {  
       if(!vote) { 
-        throw new Error("Vote not found");
+        throw new NotFoundException("Vote not found");
       }
       // create the option
       const option = this.optionRepository.create(CreateoptionDto);
@@ -31,37 +30,59 @@ export class OptionService {
   }
 
   findAll(voteId: string): Promise<Option[]> {
-    return this.optionRepository.find({
-      where: {
-        vote: {
-          id: voteId
+    //check if the vote exists
+    return this.voteService.findOne(voteId).then((vote) => {
+        if(!vote) {
+            throw new NotFoundException("Vote not found");
         }
-      }
+        return this.optionRepository.find({
+            where: {
+            vote: {
+                id: voteId
+            }
+            }
+        });
     });
   }
 
 
 
-  findOne(id: string): Promise<Option> {
-  return this.optionRepository.findOne({
-    where: {
-      id: id
+    findOne(voteId: string, optionId: string): Promise<Option> {
+        return this.optionRepository.findOne({
+            where: {
+                id: Equal(optionId),
+                vote: {
+                    id: voteId
+                }
+            }
+        }).then(option => {
+            if (!option) {
+                throw new NotFoundException("Option not found");
+            }
+            return option;
+        });
     }
-  }).then(Option => {
-    if(!Option){
-      throw new Error("Option not found");
+
+
+
+    update(voteid: string , id: string, updateOptionDto: UpdateOptionDto) {
+
+        this.findOne(voteid , id).then((Option) => {
+            if(!Option) {
+                throw new NotFoundException("Option not found");
+            }
+        });
+        return this.optionRepository.update(id, updateOptionDto);
     }
-    return Option;
-  });
-}
 
 
-update(id: string, updateoptionDto: UpdateOptionDto) {
-  return this.optionRepository.update(id, updateoptionDto);
-}
 
-
-remove(id: string) {
-  return this.optionRepository.delete(id);
+remove(voteid: string, id: string) {
+    this.findOne(voteid , id).then((Option) => {
+        if(!Option) {
+            throw new NotFoundException("Option not found");
+        }
+    });
+    return this.optionRepository.delete(id);
 }
 }
