@@ -1,7 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { OptionService } from './option.service';
 import { OptionController } from './option.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 
 import { Option } from './entities/option.entity';
 

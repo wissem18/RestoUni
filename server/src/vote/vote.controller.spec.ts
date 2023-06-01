@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
 import { VoteController } from './vote.controller';
 import { VoteService } from './vote.service';
