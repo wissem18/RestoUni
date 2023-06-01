@@ -7,8 +7,6 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
-  Typography,
 } from "@mui/material";
 
 const Menu = () => {

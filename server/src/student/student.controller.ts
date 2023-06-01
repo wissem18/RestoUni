@@ -17,6 +17,10 @@ export class StudentController {
   findAll() {
     return this.studentService.findAll();
   }
+  @Get('identifier/:identifier')
+  findByIdentifier(@Param('identifier') identifier:number){
+    return this.studentService.findByIdentifier(identifier);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -33,7 +37,7 @@ export class StudentController {
     return this.studentService.remove(id);
   }
 
-  @Post(':studentId/vote/:voteId')
+ /* @Post(':studentId/vote/:voteId')
   async vote(
     @Param('studentId') studentId: string,
     @Param('voteId') voteId: string,
@@ -41,5 +45,5 @@ export class StudentController {
   ) {
     await this.studentService.Vote(studentId, voteId, optionId);
     return { message: 'Vote recorded successfully' };
-  }
+  }*/
 }
