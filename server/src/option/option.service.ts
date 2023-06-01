@@ -17,32 +17,51 @@ export class OptionService {
     private readonly voteService: VoteService
   ) { }
 
-  create(voteID,createOptionDto: CreateOptionDto) {
-      // check if the restaurant exists
-    return this.voteService.findOne(voteID).then((Vote) => {  
-      if(!Vote) { 
-        throw new NotFoundException("Vote not found");
+  create(voteId:string, CreateoptionDto: CreateOptionDto): Promise<Option> {
+    // check if the vote exists
+    return this.voteService.findOne(voteId).then((vote) => {  
+      if(!vote) { 
+        throw new Error("Vote not found");
       }
-     
-      const option = this.optionRepository.create(createOptionDto);
-      option.vote = Vote;
+      // create the option
+      const option = this.optionRepository.create(CreateoptionDto);
+      option.vote = vote;
       return this.optionRepository.save(option);
     });
   }
 
-  findAll() {
-    return `This action returns all option`;
+  findAll(voteId: string): Promise<Option[]> {
+    return this.optionRepository.find({
+      where: {
+        vote: {
+          id: voteId
+        }
+      }
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} option`;
-  }
 
-  update(id: number, updateOptionDto: UpdateOptionDto) {
-    return `This action updates a #${id} option`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} option`;
-  }
+  findOne(id: string): Promise<Option> {
+  return this.optionRepository.findOne({
+    where: {
+      id: id
+    }
+  }).then(Option => {
+    if(!Option){
+      throw new Error("Option not found");
+    }
+    return Option;
+  });
+}
+
+
+update(id: string, updateoptionDto: UpdateOptionDto) {
+  return this.optionRepository.update(id, updateoptionDto);
+}
+
+
+remove(id: string) {
+  return this.optionRepository.delete(id);
+}
 }
