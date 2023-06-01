@@ -13,16 +13,15 @@ export class Vote extends TimeStampEntity {
     
     @Column({ type: "varchar", length: 64 })
     description: string;
-    
+
     @OneToMany(() => Option, (Option) => Option.vote,
     { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE"})
-    @JoinTable()
     Options: Option[];
 
-    @ManyToOne(()=>Restaurant , (Restaurant)=>Restaurant.Students)
-    restaurant:Restaurant;
+    @ManyToOne(()=>Restaurant , (Restaurant)=>Restaurant.Votes)
+        restaurant:Restaurant;
 
-    @OneToMany(() => VoteStudent, (voteStudent) => voteStudent.student)
+    @OneToMany(() => VoteStudent, (voteStudent) => voteStudent.vote)
     voteStudents: VoteStudent[];
     
 }
