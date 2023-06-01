@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -45,11 +46,9 @@ export class RestaurantController {
 
   @Delete(':id')
 
-
   remove(@Param('id') id: string) {
     return this.restaurantService.remove(id);
   }
-
 
 }
 

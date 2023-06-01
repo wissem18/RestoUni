@@ -1,23 +1,30 @@
+/* eslint-disable prettier/prettier */
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
 import {Equal, Repository} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from './entities/vote.entity';
+
 import { RestaurantService } from 'src/restaurant/restaurant.service';
 import {Restaurant} from "../restaurant/entities/restaurant.entity";
+
 @Injectable()
 export class VoteService {
   constructor(
     @InjectRepository(Vote)
     private readonly voteRepository: Repository<Vote>,
+
     @InjectRepository(Restaurant)
     private readonly restaurantRepository: Repository<Restaurant>,
+
   ) { }
 
   async create(restaurantId:string, VoteDto: CreateVoteDto): Promise<Vote> {
     // check if the restaurant exists
+
     const restaurant = await this.restaurantRepository.findOne({where : {id  : Equal(restaurantId)}});
+
       if(!restaurant) { 
         throw new NotFoundException("Restaurant not found");
       }

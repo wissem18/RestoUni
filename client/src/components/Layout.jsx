@@ -1,10 +1,10 @@
 import React from "react";
 import Footer from "./Footer";
 import Header from "./Header";
-const Layout = ({ children }) => {
+const Layout = ({ isConnected,children }) => {
   return (
     <>
-      <Header />
+      <Header isConnected={isConnected}/>
       <div>{children}</div>
       <Footer />
     </>

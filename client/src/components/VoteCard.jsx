@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/VoteCard.css";
 
-const VoteCard = ({ name, description, options }) => {
+const VoteCard = ({ name, description, options, isUser }) => {
     const [selectedOption, setSelectedOption] = useState(null);
 
     const handleOptionChange = (option) => {
@@ -35,7 +35,7 @@ const VoteCard = ({ name, description, options }) => {
                     </label>
                 ))}
             </div>
-            <button className="voting-card-button" onClick={handleVote}>
+            <button className="voting-card-button" onClick={handleVote} disabled={isUser ? false : true}>
                 Vote
             </button>
         </div>
