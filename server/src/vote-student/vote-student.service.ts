@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
-import { CreateVoteStudentDto } from './dto/create-vote-student.dto';
-import { UpdateVoteStudentDto } from './dto/update-vote-student.dto';
+import {Inject, Injectable, NotFoundException} from '@nestjs/common';
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
+import {VoteStudent} from "./entities/vote-student.entity";
+import {StudentService} from "../student/student.service";
+import {VoteService} from "../vote/vote.service";
+import {OptionService} from "../option/option.service";
 
 @Injectable()
 export class VoteStudentService {
-  create(createVoteStudentDto: CreateVoteStudentDto) {
-    return 'This action adds a new voteStudent';
+
+  constructor(
+      @InjectRepository(VoteStudent)
+      private readonly VoteStudentRepository: Repository<VoteStudent>,
+      @Inject(StudentService)
+      private readonly StudentService: StudentService,
+  @Inject(VoteService)
+private readonly VoteService: VoteService,
+      @Inject(OptionService)
+        private readonly OptionService: OptionService
+) {}
+
+  create(voteId:string,studentId:string,optionId:string,restaurantID : string): Promise<VoteStudent> {
+    return this.StudentService.findOne(studentId,restaurantID ).then((student) => {
+        if(!student) {
+            throw new NotFoundException("Student not found");
+        }
+        console.log(student);
+        return this.VoteService.findOne(voteId).then((vote) => {
+            if(!vote) {
+            throw new NotFoundException("Vote not found");
+            }
+            return this.OptionService.findOne(voteId,optionId).then((option) => {
+            if(!option) {
+                throw new NotFoundException("Option not found");
+            }
+            const voteStudent = new VoteStudent();
+            voteStudent.student = student;
+            voteStudent.vote = vote;
+            voteStudent.option = option.id;
+            return this.VoteStudentRepository.save(voteStudent);
+            });
+        });
+    }
+
+);
   }
 
-  findAll() {
-    return `This action returns all voteStudent`;
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} voteStudent`;
-  }
+  findOne(voteID : string , studentID : string , restaurantID : string) {
+    return this.VoteService.findOne(voteID).then((vote) => {
+        if(!vote) {
+            throw new NotFoundException("Vote not found");
+        }
+        return this.StudentService.findOne(studentID,restaurantID ).then((student) => {
+            if(!student) {
+                throw new NotFoundException("Student not found");
+            }
+            return this.VoteStudentRepository.findOne({
+                where: {
+                    vote: {
+                        id: voteID
+                    },
+                    student: {
+                        id: studentID
+                    }
+                }
+            });
+        });
+    }
+);
+    }
 
-  update(id: number, updateVoteStudentDto: UpdateVoteStudentDto) {
-    return `This action updates a #${id} voteStudent`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} voteStudent`;
-  }
 }

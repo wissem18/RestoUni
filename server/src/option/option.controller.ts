@@ -9,7 +9,6 @@ import {Option} from "./entities/option.entity";
 @Controller('option')
 @UseInterceptors(ClassSerializerInterceptor)
 export class OptionController {
-  /*
   constructor(private readonly optionService: OptionService) {}
 
 
@@ -20,24 +19,23 @@ export class OptionController {
   }
 
   @Get('/vote/:voteId')
-  findAll(@Param("voteId") voteId: string): Promise<Option> {
+  findAll(@Param("voteId") voteId: string): Promise<Option[]> {
     return this.optionService.findAll(voteId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.optionService.findOne(id);
+  @Get(':id/vote/:voteId')
+  findOne(@Param('id') id: string, @Param('voteId') voteId: string) {
+    return this.optionService.findOne(voteId, id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOptionDTO: UpdateOptionDto ) {
-    return this.optionService.update(id, updateOptionDTO);
+  @Patch(':id/vote/:voteId')
+  update(@Param('id') id: string, @Body() updateOptionDTO: UpdateOptionDto , @Param('voteId') voteId: string) {
+    return this.optionService.update(voteId ,id, updateOptionDTO);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.optionService.remove(id);
+  @Delete(':id/vote/:voteId')
+  remove(@Param('id') id: string, @Param('voteId') voteId: string) {
+    return this.optionService.remove(voteId, id);
   }
 
-   */
 }

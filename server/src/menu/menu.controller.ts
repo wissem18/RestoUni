@@ -19,18 +19,18 @@ export class MenuController {
     return this.menuService.findAll(restaurantId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.menuService.findOne(id);
+  @Get(':id/restaurant/:restaurantId')
+  findOne(@Param('id') id: string, @Param('restaurantId') restaurantId: string) {
+    return this.menuService.findOne(id, restaurantId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
-    return this.menuService.update(id, updateMenuDto);
+  @Patch(':id/restaurant/:restaurantId')
+  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto, @Param('restaurantId') restaurantId: string) {
+    return this.menuService.update(id,restaurantId, updateMenuDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.menuService.remove(id);
+  @Delete(':id/restaurant/:restaurantId')
+  remove(@Param('id') id: string, @Param('restaurantId') restaurantId: string) {
+    return this.menuService.remove(id,restaurantId);
   }
 }
