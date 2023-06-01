@@ -9,11 +9,14 @@ import {Option} from "./entities/option.entity";
 @Controller('option')
 @UseInterceptors(ClassSerializerInterceptor)
 export class OptionController {
+  /*
   constructor(private readonly optionService: OptionService) {}
+
 
   @Post(":voteId")
   create(@Param('votetId') voteId: string, @Body() createOptionDto: CreateOptionDto) {
     return this.optionService.create(voteId, createOptionDto);
+
   }
 
   @Get('/vote/:voteId')
@@ -35,4 +38,6 @@ export class OptionController {
   remove(@Param('id') id: string) {
     return this.optionService.remove(id);
   }
+
+   */
 }
