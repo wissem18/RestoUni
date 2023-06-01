@@ -41,14 +41,10 @@ export class RestaurantController {
   }
 
   @Delete(':id')
-<<<<<<< HEAD
+
   remove(@Param('id') id: string) {
-    return this.restaurantService.remove(+id);
-  }
-=======
-  remove(@Param('id') id: uuid) {
     return this.restaurantService.remove(id);
   }
 
->>>>>>> 033a09c3a7cf1ff5d4f9eead5cf60f1f4e79cb08
+
 }
