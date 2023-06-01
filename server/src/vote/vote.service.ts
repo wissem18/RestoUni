@@ -38,8 +38,22 @@ export class VoteService {
     );
   }
 
-  async findOne(restaurantID:string,id: string): Promise<Vote> {
-    
+  async findOne(id: string): Promise<Vote> {
+
+    return this.voteRepository.findOne({
+      where: {
+        id: id
+      },
+      relations:{
+        Options: true, 
+        voteStudents:true
+      }
+    }).then(Vote => {
+      if(!Vote){
+        throw new Error("Vote not found");
+      }
+      return Vote;
+    });
   }
 
   async update(id: string, updateVoteDto: UpdateVoteDto): Promise<Vote> {
@@ -60,7 +74,6 @@ export class VoteService {
       // Handle error when vote is not found
       throw new NotFoundException(`Vote with id ${id} not found`);
     }
-
     await this.voteRepository.remove(vote);
   }
 }

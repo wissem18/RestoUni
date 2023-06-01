@@ -1,27 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import { Restaurant } from './entities/restaurant.entity';
+
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
+import {Restaurant} from "./entities/restaurant.entity";
+import {Menu} from "../menu/entities/menu.entity";
+
+
 
 @Injectable()
 export class RestaurantService {
+    constructor(
+        @InjectRepository(Restaurant)
+        private readonly RestaurantRepository: Repository<Restaurant>
+    ) {}
   create(createRestaurantDto: CreateRestaurantDto) {
-    return 'This action adds a new restaurant';
+    return  this.RestaurantRepository.save(createRestaurantDto);
   }
 
   findAll() {
-    return `This action returns all restaurant`;
+    return  this.RestaurantRepository.find();
   }
 
-  async findOne(id: string) :Promise<Restaurant> {
-    return `This action returns a #${id} restaurant`;
+
+  findOne(id: string): Promise<Restaurant> {
+    return this.RestaurantRepository.findOne({
+      where: {
+        id: id
+      }
+    }).then(Restaurant => {
+      if(!Restaurant){
+        throw new Error("Restaurant not found");
+      }
+      return Restaurant;
+    });
+
   }
 
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
-    return `This action updates a #${id} restaurant`;
+  update(id: string, updateRestaurantDto: UpdateRestaurantDto) {
+    return this.RestaurantRepository.update(id, updateRestaurantDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} restaurant`;
+  remove(id: string) {
+    return this.RestaurantRepository.delete(id);
   }
 }
