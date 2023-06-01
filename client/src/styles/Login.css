@@ -1,6 +1,5 @@
 .form-container {
     margin: 2rem auto 2rem auto;
-
     width: 320px;
     border-radius: 0.75rem;
     background-color: rgba(17, 24, 39, 1);
@@ -81,7 +80,7 @@
 .social-message {
     display: flex;
     align-items: center;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 }
 
 .line {
@@ -171,4 +170,9 @@
 
 .inpt:checked+.slider:before {
     transform: translateX(1.5em);
+}
+.errorMessage{
+    text-align: center;
+    color: red;
+    font-weight: bold;
 }

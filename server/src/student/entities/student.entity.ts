@@ -23,7 +23,6 @@ export class Student extends TimeStampEntity{
   @Column({ length: 50 })
   email: string;
   
-  @Exclude()
   @Column()
    password:string;
 
