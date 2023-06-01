@@ -1,0 +1,108 @@
+.container-settings {
+    width: 153px;
+    height: 153px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: -3px -3px 7px #ffffff73, 3px 3px 5px;
+    border: 2px solid #010000;
+    overflow: hidden;
+    transition: all 0.7s;
+}
+
+.profile-picture {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.rounded-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border:3px solid #16222b;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-input-label {
+    display: block;
+    text-align: center;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.titl {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-left: auto;
+    align-self:center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    transition: 0.2s ease;
+
+}
+.form-control:focus{
+    border-bottom: 2px solid #3498db;
+    border-bottom-right-radius:20px ;
+    border-top-left-radius: 20px;
+    color:#3498db
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 10px;
+}
+
+.btn:hover {
+    background-color: #4890dc;
+    transform: scale(1.1);
+}
+.btnSave{
+    background-color: green;
+}
+.btnCancel{
+        background-color: red;
+}
+.container-settings:hover{
+    width: 450px;
+    height: 800px;
+    border-radius: 5px;
+}
+.container-settings:hover img{
+    width: 100px;
+    height: 100px;
+    margin:20px 31% ;
+
+}

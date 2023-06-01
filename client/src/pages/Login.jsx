@@ -1,34 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
-import { NavLink } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import '../styles/Login.css';
+
 import axios from 'axios';
 
-function Login() {
+function Login(props) {
     const [identifier, setIdentifier] = useState(null);
     const [password, setPassword] = useState(null);
-    const [error,setError]=useState(null);
+    const [error, setError] = useState(null);
 
     const identifierHandler = (value) => {
         setIdentifier(value);
 
 
-  
+
     };
 
     const passwordHandler = (value) => {
         setPassword(value);
     };
 
-    const loginService = (e) => {
+    const loginService = async (e) => {
         e.preventDefault();
+        
+
+        console.log("ok1");
         const identifierRegex = /^(?:2[0-9]{6}|[3-4][0-9]{6}|5000000)$/;
-        if (!identifierRegex.test(identifier)||!identifier) {
+        if (!identifierRegex.test(identifier) || !identifier) {
             setError("id wrong")
         }
         else {
 
-            axios
+            /*axios
                 .get(`http://localhost:3006/student/identifier/${identifier}`)
                 .then((response) => {
                     console.log(response);
@@ -44,12 +48,14 @@ function Login() {
                 })
                 .catch((error) => {
                     console.error(error);
-                });
+                });*/
+            await props.userConnected();
+            //window.location.href = 'http://localhost:3000/';
         }
     };
 
     return (
-        <Layout>
+        <Layout isConnected={props.isConnected}>
             <div className="form-container">
                 <p className="title">Login</p>
                 <form className="form" onSubmit={loginService}>

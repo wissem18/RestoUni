@@ -1,18 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    UseInterceptors,
+    ClassSerializerInterceptor
+} from '@nestjs/common';
+
 import { VoteService } from './vote.service';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
 
 @Controller('vote')
+@UseInterceptors(ClassSerializerInterceptor)
+
 export class VoteController {
  constructor(private readonly voteService: VoteService) {}
 
-  @Post()
+  @Post(":restaurantId")
   create(@Body() createVoteDto: CreateVoteDto,@Param("restaurantId") restaurantId: string) {
     return this.voteService.create(restaurantId,createVoteDto);
   }
 
-  @Get()
+  @Get("/restaurant/:restaurantId")
   findAll(@Param("restaurantId") restaurantId: string) {
     return this.voteService.findAll(restaurantId);
   }

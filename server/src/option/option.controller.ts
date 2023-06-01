@@ -1,34 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { OptionService } from './option.service';
-import { CreateOptionDto } from './dto/create-option.dto';
-import { UpdateOptionDto } from './dto/update-option.dto';
+
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ClassSerializerInterceptor} from '@nestjs/common';
+import {OptionService} from "./option.service";
+import {CreateOptionDto} from "./dto/create-option.dto";
+import {UpdateOptionDto} from "./dto/update-option.dto";
+import {Option} from "./entities/option.entity";
+
+
 
 @Controller('option')
+@UseInterceptors(ClassSerializerInterceptor)
 export class OptionController {
   constructor(private readonly optionService: OptionService) {}
 
-  @Post(":id")
-  create(@Body() createOptionDto: CreateOptionDto, @Param('id') id: string) {
-    return this.optionService.create(id,createOptionDto);
+
+  @Post(":voteId")
+  create(@Param('votetId') voteId: string, @Body() createOptionDto: CreateOptionDto) {
+    return this.optionService.create(voteId, createOptionDto);
+
   }
 
-  @Get()
-  findAll() {
-    return this.optionService.findAll();
+  @Get('/vote/:voteId')
+  findAll(@Param("voteId") voteId: string): Promise<Option[]> {
+    return this.optionService.findAll(voteId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.optionService.findOne(+id);
+  @Get(':id/vote/:voteId')
+  findOne(@Param('id') id: string, @Param('voteId') voteId: string) {
+    return this.optionService.findOne(voteId, id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOptionDto: UpdateOptionDto) {
-    return this.optionService.update(+id, updateOptionDto);
+  @Patch(':id/vote/:voteId')
+  update(@Param('id') id: string, @Body() updateOptionDTO: UpdateOptionDto , @Param('voteId') voteId: string) {
+    return this.optionService.update(voteId ,id, updateOptionDTO);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.optionService.remove(+id);
+  @Delete(':id/vote/:voteId')
+  remove(@Param('id') id: string, @Param('voteId') voteId: string) {
+    return this.optionService.remove(voteId, id);
   }
+
 }

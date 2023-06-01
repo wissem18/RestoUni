@@ -3,47 +3,33 @@ import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 
-@Controller('student')
+@Controller('student/:restaurantId')
 @UseInterceptors(ClassSerializerInterceptor)
 export class StudentController {
   constructor(private readonly studentService: StudentService) { }
 
   @Post()
-  create(@Body() createStudentDto: CreateStudentDto) {
-    return this.studentService.create(createStudentDto);
+  create(@Param('restaurantId') restaurantId: string, @Body() createStudentDto: CreateStudentDto) {
+    return this.studentService.create(restaurantId, createStudentDto);
   }
 
   @Get()
-  findAll() {
-    return this.studentService.findAll();
-  }
-  @Get('identifier/:identifier')
-  findByIdentifier(@Param('identifier') identifier:number){
-    return this.studentService.findByIdentifier(identifier);
+  findAll(@Param('restaurantId') restaurantId: string) {
+    return this.studentService.findAll(restaurantId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.studentService.findOne(id);
+  findOne(@Param('id') id: string, @Param('restaurantId') restaurantId: string) {
+    return this.studentService.findOne(id, restaurantId);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentService.update(+id, updateStudentDto);
+  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto, @Param('restaurantId') restaurantId: string) {
+    return this.studentService.update(restaurantId, id, updateStudentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.studentService.remove(id);
+  remove(@Param('id') id: string, @Param('restaurantId') restaurantId: string) {
+    return this.studentService.remove(restaurantId, id);
   }
-
- /* @Post(':studentId/vote/:voteId')
-  async vote(
-    @Param('studentId') studentId: string,
-    @Param('voteId') voteId: string,
-    @Body('optionId') optionId: string,
-  ) {
-    await this.studentService.Vote(studentId, voteId, optionId);
-    return { message: 'Vote recorded successfully' };
-  }*/
 }

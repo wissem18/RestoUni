@@ -8,6 +8,8 @@ export class CreateMenuDto {
     @IsNotEmpty()
     dessert: string;
 
+    @IsNotEmpty()
+    date : string;
 
 
 }

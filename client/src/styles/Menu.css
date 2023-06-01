@@ -178,3 +178,9 @@
         transform: translateY(0px);
     }
 }
+.addMenu{
+    width: 10rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: black;
+}

@@ -1,23 +1,30 @@
+/* eslint-disable prettier/prettier */
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
-import {Repository} from 'typeorm';
+import {Equal, Repository} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from './entities/vote.entity';
+
 import { RestaurantService } from 'src/restaurant/restaurant.service';
+import {Restaurant} from "../restaurant/entities/restaurant.entity";
+
 @Injectable()
 export class VoteService {
   constructor(
     @InjectRepository(Vote)
     private readonly voteRepository: Repository<Vote>,
 
-    @Inject(RestaurantService)
-    private readonly RestaurantService: RestaurantService
+    @InjectRepository(Restaurant)
+    private readonly restaurantRepository: Repository<Restaurant>,
+
   ) { }
 
   async create(restaurantId:string, VoteDto: CreateVoteDto): Promise<Vote> {
     // check if the restaurant exists
-    return this.RestaurantService.findOne(restaurantId).then((restaurant) => {  
+
+    const restaurant = await this.restaurantRepository.findOne({where : {id  : Equal(restaurantId)}});
+
       if(!restaurant) { 
         throw new NotFoundException("Restaurant not found");
       }
@@ -25,19 +32,18 @@ export class VoteService {
       const vote = this.voteRepository.create(VoteDto);
       vote.restaurant = restaurant;
       return this.voteRepository.save(vote);
-    });
   }
 
   async findAll(restaurantID:string): Promise<Vote[]> {
     return await this.voteRepository.find({
       where : {restaurant : {id : restaurantID}},
-      relations : {Options: true, 
+      relations : {
+        Options: true,
         voteStudents:true
       } 
     },
     );
   }
-
   async findOne(id: string): Promise<Vote> {
 
     return this.voteRepository.findOne({
@@ -45,7 +51,7 @@ export class VoteService {
         id: id
       },
       relations:{
-        Options: true, 
+        Options: true,
         voteStudents:true
       }
     }).then(Vote => {
