@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 
 import {
     Controller,
@@ -26,9 +27,9 @@ export class VoteController {
     return this.voteService.create(restaurantId,createVoteDto);
   }
 
-  @Get("/restaurant/:restaurantId")
-  findAll(@Param("restaurantId") restaurantId: string) {
-    return this.voteService.findAll(restaurantId);
+  @Get()
+  findAll() {
+    return this.voteService.findAll();
   }
 
   @Get(':id')

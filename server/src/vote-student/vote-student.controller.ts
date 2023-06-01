@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -10,8 +11,7 @@ import {
   ClassSerializerInterceptor
 } from '@nestjs/common';
 import { VoteStudentService } from './vote-student.service';
-import { CreateVoteStudentDto } from './dto/create-vote-student.dto';
-import { UpdateVoteStudentDto } from './dto/update-vote-student.dto';
+
 
 @Controller('vote-student')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -24,9 +24,9 @@ export class VoteStudentController {
     return this.voteStudentService.create(voteId,  studentId, optionId, restaurantId);
   }
 
-  @Get(':restaurantId/:studentId/:voteId')
-  findOne(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string) {
-    return this.voteStudentService.findOne( voteId, studentId,restaurantId);
+  @Get('studentId/:voteId')
+  findOne( @Param('studentId') studentId: string, @Param('voteId') voteId: string) {
+    return this.voteStudentService.findOne( voteId, studentId);
   }
 
 }

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { TimeStampEntity } from "src/timestamp/timpestamp.entity";
 import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn, ManyToMany, ManyToOne } from "typeorm";
 import {v4 as uuid} from "uuid";
