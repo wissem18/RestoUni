@@ -46,6 +46,9 @@ const Header = (props) => {
         <li>
           <NavLink to={"/contact"}>Contact</NavLink>
         </li>
+        {props.isConnected ? (<li>
+          <NavLink to={"/settings"}>settings</NavLink>
+        </li>) : <></>}
         <li>
           <NavLink to={"/login"}><button>
             <span className="box">
@@ -97,6 +100,9 @@ const Header = (props) => {
                 <li>
                   <NavLink to={"/contact"}>Contact</NavLink>
                 </li>
+                {props.isConnected ? (<li>
+                  <NavLink to={"/settings"}>settings</NavLink>
+                </li>):<></>}
                 <li>
                   {!props.isConnected ? (<NavLink to={"/login"}>
                     <button className="box-button">
@@ -106,7 +112,7 @@ const Header = (props) => {
                     </button></NavLink>) : <NavLink to={"/"}>
                     <button className="box-button">
                       <span className="box">
-                        Settings
+                        Log Out
                       </span>
                     </button></NavLink>}
 

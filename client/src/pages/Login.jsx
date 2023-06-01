@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
-import { NavLink } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import '../styles/Login.css';
+
 import axios from 'axios';
 
 function Login(props) {
     const [identifier, setIdentifier] = useState(null);
     const [password, setPassword] = useState(null);
-    const [error,setError]=useState(null);
+    const [error, setError] = useState(null);
 
     const identifierHandler = (value) => {
         setIdentifier(value);
 
 
-  
+
     };
 
     const passwordHandler = (value) => {
         setPassword(value);
     };
 
-    const loginService = (e) => {
+    const loginService = async (e) => {
         e.preventDefault();
+        
+
+        console.log("ok1");
         const identifierRegex = /^(?:2[0-9]{6}|[3-4][0-9]{6}|5000000)$/;
-        if (!identifierRegex.test(identifier)||!identifier) {
+        if (!identifierRegex.test(identifier) || !identifier) {
             setError("id wrong")
         }
         else {
@@ -45,10 +49,8 @@ function Login(props) {
                 .catch((error) => {
                     console.error(error);
                 });*/
-            const user = {  };
-
-            props.userConnected(user);
-            window.location.href = 'http://localhost:3000/';
+            await props.userConnected();
+            //window.location.href = 'http://localhost:3000/';
         }
     };
 
