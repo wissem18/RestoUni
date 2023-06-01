@@ -5,9 +5,9 @@ import Banner from "../images/banner.jpg";
 import BannerAnimated from "../images/bannerAnimated.png";
 import "../styles/HomeStyles.css";
 
-const Home = () => {
+const Home = (props) => {
   return (
-    <Layout>
+    <Layout isConnected={props.isConnected}>
       <div className="home" style={{ backgroundImage: `url(${Banner})` }}>
         <div>
           <img src={BannerAnimated} alt="header" />

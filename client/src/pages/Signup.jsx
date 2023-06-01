@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import "../styles/Login.css";
 
-function Signup() {
+function Signup(props) {
     const [check,setCheck]=React.useState(true);
     const [firstname,setFirstName]=useState(null);
     const [lastname,setLastName]=useState(null);
@@ -72,7 +72,7 @@ function Signup() {
 
     }
     return (
-        <Layout>
+        <Layout isConnected={props.isConnected}>
             
             <div className="form-container">
                 <label className="switch">

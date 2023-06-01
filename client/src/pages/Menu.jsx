@@ -9,9 +9,9 @@ import {
   CardContent,
 } from "@mui/material";
 
-const Menu = () => {
+const Menu = (props) => {
   return (
-    <Layout>
+    <Layout isConnected={props.isConnected}>
       <Box
         sx={{
           display: "flex",

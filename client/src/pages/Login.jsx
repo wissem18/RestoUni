@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import '../styles/Login.css';
 import axios from 'axios';
 
-function Login() {
+function Login(props) {
     const [identifier, setIdentifier] = useState(null);
     const [password, setPassword] = useState(null);
     const [error,setError]=useState(null);
@@ -28,7 +28,7 @@ function Login() {
         }
         else {
 
-            axios
+            /*axios
                 .get(`http://localhost:3006/student/identifier/${identifier}`)
                 .then((response) => {
                     console.log(response);
@@ -44,12 +44,16 @@ function Login() {
                 })
                 .catch((error) => {
                     console.error(error);
-                });
+                });*/
+            const user = {  };
+
+            props.userConnected(user);
+            window.location.href = 'http://localhost:3000/';
         }
     };
 
     return (
-        <Layout>
+        <Layout isConnected={props.isConnected}>
             <div className="form-container">
                 <p className="title">Login</p>
                 <form className="form" onSubmit={loginService}>

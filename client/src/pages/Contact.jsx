@@ -15,9 +15,9 @@ import {
   Typography,
 } from "@mui/material";
 
-const Contact = () => {
+const Contact = (props) => {
   return (
-    <Layout>
+    <Layout isConnected={props.isConnected}>
       <Box sx={{ my: 5, ml: 10, "& h4": { fontWeight: "bold", mb: 2 } }}>
         <Typography variant="h4">Contact My Resturant</Typography>
         <p>

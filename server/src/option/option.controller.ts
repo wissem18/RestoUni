@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { OptionService } from './option.service';
 import { CreateOptionDto } from './dto/create-option.dto';
@@ -7,9 +8,9 @@ import { UpdateOptionDto } from './dto/update-option.dto';
 export class OptionController {
   constructor(private readonly optionService: OptionService) {}
 
-  @Post()
-  create(@Body() createOptionDto: CreateOptionDto) {
-    return this.optionService.create(createOptionDto);
+  @Post(":voteID")
+  create(@Body() createOptionDto: CreateOptionDto,@Param('voteID') voteID: string) {
+    return this.optionService.create(voteID,createOptionDto);
   }
 
   @Get()

@@ -1,7 +1,7 @@
+/* eslint-disable prettier/prettier */
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from 'src/vote/entities/vote.entity';
-import { VoteService } from 'src/vote/vote.service';
 import { Repository } from 'typeorm';
 import { CreateOptionDto } from './dto/create-option.dto';
 import { UpdateOptionDto } from './dto/update-option.dto';
@@ -13,13 +13,13 @@ export class OptionService {
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
 
-    @Inject(Vote)
-    private readonly voteService: VoteService
+    @InjectRepository(Vote)
+    private readonly voteRepository: Repository<Vote>
   ) { }
 
   create(voteID,createOptionDto: CreateOptionDto) {
       // check if the restaurant exists
-    return this.voteService.findOne(voteID).then((Vote) => {  
+    return this.voteRepository.findOne({where:{id:voteID}}).then((Vote) => {  
       if(!Vote) { 
         throw new NotFoundException("Vote not found");
       }

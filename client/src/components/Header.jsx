@@ -13,7 +13,7 @@ import Logo from "../images/logo.svg";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
 import "../styles/HeaderStyles.css";
-const Header = () => {
+const Header = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   // hndle menu click
   const handleDrawerToggle = () => {
@@ -98,12 +98,19 @@ const Header = () => {
                   <NavLink to={"/contact"}>Contact</NavLink>
                 </li>
                 <li>
-                  <NavLink to={"/login"}>
+                  {!props.isConnected ? (<NavLink to={"/login"}>
                     <button className="box-button">
-                    <span className="box">
-                      Log In
-                    </span>
-                  </button></NavLink>
+                      <span className="box">
+                        Log In
+                      </span>
+                    </button></NavLink>) : <NavLink to={"/"}>
+                    <button className="box-button">
+                      <span className="box">
+                        Settings
+                      </span>
+                    </button></NavLink>}
+
+                 
                 </li>
 
               </ul>
