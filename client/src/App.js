@@ -11,7 +11,7 @@ import Signup from "./pages/Signup"
 import React, { useState } from 'react'
 function App() {
   const [isConnected,setIsConnected] = useState(false);
-  const [isUser,setIsUser] = useState(true);
+  const [isUser,setIsUser] = useState(false);
   const [user,setUser] = useState({});
   const userConnected = () => {
     setIsConnected((prev) => !prev);
