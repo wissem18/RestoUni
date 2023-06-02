@@ -18,7 +18,7 @@ dotenv.config();
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: "localhost",
-      port: 3308,
+      port: 3306,
       username: "root",
       password: "",
       database: "webproject",
@@ -35,4 +35,4 @@ dotenv.config();
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule{}
+export class AppModule { }

@@ -87,7 +87,15 @@ export class StudentService {
     if(!student) {
       throw new NotFoundException("Student not found");
     }
-    return this.StudentRepository.update(student.id,updateStudentDto);
+     const newUser = await this.StudentRepository.update(student.id, updateStudentDto);
+     const payload = {
+       id: newUser["id"],
+       firstname: newUser["firstname"],
+       lastname: newUser["lastname"],
+       email: newUser["email"],
+       cardID: newUser["carID"],
+     }
+     return { token: await this.jwtService.signAsync(payload)} ;
     }
 
 

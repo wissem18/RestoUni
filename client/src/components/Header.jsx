@@ -13,6 +13,8 @@ import Logo from "../images/logo.svg";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
 import "../styles/HeaderStyles.css";
+import useResto from "../context/RestoContext";
+import useUser from "../context/UserContext";
 const Header = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
@@ -20,10 +22,11 @@ const Header = (props) => {
   };
   const LogOut = (e) => {
     e.preventDefault();
-    localStorage.removeItem("user");
-    localStorage.removeItem("restaurant");
+    localStorage.removeItem("token");
     window.location.href = 'http://localhost:3000/login';
   }
+  const { myResto, setMyResto } = useResto();
+  const { myUser, setMyUser } = useUser();
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography
@@ -50,7 +53,7 @@ const Header = (props) => {
         <li>
           <NavLink to={"/contact"}>Contact</NavLink>
         </li>
-        {props.isConnected ? (<li>
+        {myUser || myResto ? (<li>
           <NavLink to={"/settings"}>settings</NavLink>
         </li>) : <></>}
         <li>
@@ -104,17 +107,17 @@ const Header = (props) => {
                 <li>
                   <NavLink to={"/contact"}>Contact</NavLink>
                 </li>
-                {props.isConnected ? (<li>
+                {myResto || myUser ? (<li>
                   <NavLink to={"/settings"}>settings</NavLink>
                 </li>) : <></>}
                 <li>
-                  {!props.isConnected ? (<NavLink to={"/login"}>
+                  {!myResto && !myUser ? (<NavLink to={"/login"}>
                     <button className="box-button">
                       <span className="box">
                         Log In
                       </span>
                     </button></NavLink>) : <NavLink to={"/"}>
-                      <button className="box-button" onClick={(e) => LogOut(e)}>
+                    <button className="box-button" onClick={(e) => LogOut(e)}>
                       <span className="box">
                         Log Out
                       </span>

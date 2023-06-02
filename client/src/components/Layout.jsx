@@ -4,7 +4,7 @@ import Header from "./Header";
 const Layout = ({ isConnected,children }) => {
   return (
     <>
-      <Header isConnected={isConnected}/>
+      <Header/>
       <div>{children}</div>
       <Footer />
     </>

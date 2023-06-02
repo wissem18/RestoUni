@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { NavLink } from 'react-router-dom';
 import '../styles/Login.css';
-
+import JwtToken from '../JwtToken';
 import axios from 'axios';
 
-function Login(props) {
+function Login() {
     const [identifier, setIdentifier] = useState(null);
     const [password, setPassword] = useState(null);
     const [error, setError] = useState(null);
@@ -22,48 +22,35 @@ function Login(props) {
         e.preventDefault();
         const identifierUserRegex = /^(?:2[0-9]{6}|[3-4][0-9]{6}|5000000)$/;
         const identifierRestoRegex = /^(?:2000|200[1-9]|20[1-9]\d|2[1-9]\d{2}|[3-4]\d{3}|5000)$/;
-        if (!identifierUserRegex.test(identifier) || identifierRestoRegex.test(identifier) || !identifier) {
-            setError("id wrong")
-        }
         if (identifierUserRegex.test(identifier) && password) {
             axios
-                .get(`http://localhost:3006/student/identifier/${identifier}`)
+                .post(`http://localhost:3006/student/login`, {
+                    'cardID': identifier,
+                    'password': password
+                }, { headers: { 'Content-Type': 'application/json', }, })
                 .then(async (response) => {
-                    console.log(response);
-                    if (!response.data) {
-                        setError("id wrong")
-                    }
-                    else if (response.data.password === password) {
-                        await props.isConnectedHandler(response.data);
+                        const token = response.data.token;
+                        localStorage.setItem("token", token);
+                        JwtToken(token);
                         window.location.href = 'http://localhost:3000/';
-                    } else {
-                        setError('Password is wrong');
-                    }
                 })
                 .catch((error) => {
-                    console.error(error);
                     setError(error.response.data.message);
                 });
         }
         else if (identifierRestoRegex.test(identifier) && password) {
             axios
-                .get(`http://localhost:3006/restaurant/identifier/${identifier}`)
+                .post(`http://localhost:3006/restaurant/login`, {
+                    'identifiant': identifier,
+                    'password': password
+                }, { headers: { 'Content-Type': 'application/json', }, })
                 .then(async (response) => {
-                    console.log(response.data);
-
-                    if (!response.data) {
-                        setError("id wrong")
-                    }
-                    else if (response.data.password === password) {
-                        await props.restaurantHandler(response.data);
-                        console.log(response.data);
+                        const token = response.data.token;
+                        localStorage.setItem("token", token);
+                        JwtToken(token);
                         window.location.href = 'http://localhost:3000/';
-                    } else {
-                        setError('Password is wrong');
-                    }
                 })
                 .catch((error) => {
-                    console.error(error);
                     setError(error.response.data.message);
                 });
 
@@ -72,7 +59,7 @@ function Login(props) {
     }
 
     return (
-        <Layout isConnected={props.isConnected}>
+        <Layout >
             <div className="form-container">
                 <p className="title">Login</p>
                 <form className="form" onSubmit={loginService}>

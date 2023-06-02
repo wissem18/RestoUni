@@ -7,54 +7,37 @@ import Menu from "./pages/Menu";
 import Pagenotfound from "./pages/Pagenotfound";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup"
+import useResto from "../src/context/RestoContext";
+import useUser from "../src/context/UserContext";
 
-import React, { useEffect, useState } from 'react'
 function App() {
-  const [isConnected,setIsConnected] = useState(false);
-  const [isUser,setIsUser] = useState(false);
-  const [user,setUser] = useState({});
-  const [restaurant,setRestaurant]=useState({});
-  const userConnected = (connected) => {
-    setIsConnected(connected);
-  }
-  const isConnectedHandler = async (user) => {
-    setIsUser(user);
-    await setIsUser(true);
-    localStorage.removeItem("restaurant");
-    localStorage.setItem("user", JSON.stringify(user));
-
-  }
-  const restaurantHandler=async (restaurant)=>{
-    setRestaurant(restaurant);
-    await setIsUser(false);
-    localStorage.removeItem("user");
-    localStorage.setItem("restaurant", JSON.stringify(restaurant));
-  }
-  useEffect(() => {
-    if (localStorage.getItem("user") !== null) {
-      userConnected(true);
-      setIsUser(true);
-    }
-    else if (localStorage.getItem("restaurant") !== null) {
-      userConnected(true);
-      setIsUser(false);
-    }
-    else{
-      userConnected(false);
-    }
-  }, [localStorage.getItem("restaurant"), localStorage.getItem("user")]);
+  const { myResto, setMyResto } = useResto();
+  const { myUser, setMyUser } = useUser();
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home isConnected={isConnected} />} />
-          <Route path="/vote" element={<Vote isConnected={isConnected} isUser={isUser}/>} />
-          <Route path="/contact" element={<Contact isConnected={isConnected} />} />
-          <Route path="/menu" element={<Menu isConnected={isConnected} isUser={isUser} />}  />
-          <Route path="/login" element={<Login userConnected={userConnected} isConnected={isConnected} restaurantHandler={restaurantHandler} isConnectedHandler={isConnectedHandler} />} />
-          <Route path="/signup" element={<Signup isConnected={isConnected} />} />
-          <Route path="/settings" element={<Settings isConnected={isConnected} isUser={isUser} />} />
-          <Route path="*" element={<Pagenotfound isConnected={isConnected} />} />
+          {myResto || myUser ? (<>
+            <Route path="/" element={<Home />} />
+            <Route path="/vote" element={<Vote />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="*" element={<Pagenotfound />} />
+          </>) : (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/vote" element={<Login />} />
+              <Route path="/contact" element={<Login />} />
+              <Route path="/menu" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/settings" element={<Login />} />
+              <Route path="*" element={<Pagenotfound />} /></>
+          )}
+
         </Routes>
       </BrowserRouter>
     </div>

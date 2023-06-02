@@ -18,7 +18,7 @@ const Vote = (props) => {
     setShowVoteform(false);
   };
   return (
-    <Layout isConnected={props.isConnected}>
+    <Layout >
       {props.isUser ? (
         <Box
           sx={{

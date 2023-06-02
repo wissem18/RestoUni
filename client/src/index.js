@@ -3,12 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { RestoProvider } from "./context/RestoContext";
+import {UserProvider} from './context/UserContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <UserProvider>
+  <RestoProvider>
   <React.StrictMode>
     <App />
   </React.StrictMode>
+  </RestoProvider>
+  </UserProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

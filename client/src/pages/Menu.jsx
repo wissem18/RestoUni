@@ -3,6 +3,8 @@ import { MenuList } from "../data/data";
 import Layout from "./../components/Layout";
 import MenuForm from "../components/MenuForm";
 import '../styles/Menu.css'
+import useResto from "../context/RestoContext";
+import useUser from "../context/UserContext";
 import {
   Box,
   Card,
@@ -11,6 +13,8 @@ import {
 } from "@mui/material";
 
 const Menu = (props) => {
+  const { myResto, setMyResto } = useResto();
+  const { myUser, setMyUser } = useUser();
   const [showMenuform, setShowMenuform] = React.useState(false);
   const handleMenu = () => {
     setShowMenuform(true);
@@ -19,9 +23,10 @@ const Menu = (props) => {
   const handleMenuFormClose = () => {
     setShowMenuform(false);
   };
+
   return (
-    <Layout isConnected={props.isConnected}>
-      {props.isUser ? (<Box
+    <Layout >
+      {myUser ? (<Box
         sx={{
           display: "flex",
           flexWrap: "wrap",
