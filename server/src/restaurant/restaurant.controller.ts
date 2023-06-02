@@ -30,13 +30,21 @@ export class RestaurantController {
   findAll() {
     return this.restaurantService.findAll();
   }
+  @Get('find/:name')
+  findByName(@Param('name') name: string) {
 
+    return this.restaurantService.findByName(name);
+  }
   @Get(':id')
-  findOne(@Param('id') id: uuid) {
+  findOne(@Param('id') id: string) {
 
     return this.restaurantService.findOne(id);
   }
+  @Get('identifier/:identifier')
+  findByIdentifer(@Param('identifier') identifier: string) {
 
+    return this.restaurantService.findByIdentifier(identifier);
+  }
 
 
   @Patch(':id')
@@ -49,6 +57,7 @@ export class RestaurantController {
   remove(@Param('id') id: string) {
     return this.restaurantService.remove(id);
   }
+
 
 }
 

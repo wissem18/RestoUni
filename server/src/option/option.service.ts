@@ -75,4 +75,12 @@ remove( id: string) {
     });
     return this.optionRepository.delete(id);
 }
+softRemove(voteid: string, id: string) {
+    this.findOne(voteid , id).then((Option) => {
+        if(!Option) {
+            throw new NotFoundException("Option not found");
+        }
+    });
+    return this.optionRepository.softDelete(id);
+}
 }

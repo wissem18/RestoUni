@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Layout from "../components/Layout";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 import "../styles/Login.css";
 
 function Signup(props) {
+    const navigate = useNavigate();
     const [check, setCheck] = useState(true);
     const [firstname, setFirstName] = useState(null);
     const [lastname, setLastName] = useState(null);
     const [email, setEmail] = useState(null);
     const [nins, setNins] = useState(null);
     const [password, setPassword] = useState(null);
+    const [RestaurantName, setRautaurantName] = useState(null);
     const [error, setError] = useState(null);
-    const [items, setItems] = useState([
-        { id: 1, name: "Item 1" },
-        { id: 2, name: "Item 2" },
-        { id: 3, name: "Item 3" },
-    ]);
+    const [items, setItems] = useState([]);
 
     const firstNameHandler = (value) => {
         setFirstName(value);
@@ -38,18 +36,18 @@ function Signup(props) {
     const passwordHandler = (value) => {
         setPassword(value);
     }
-
+    const RestaurantNameHandler = (value) => {
+        setRautaurantName(value);
+    }
     const handleCheckboxChange = () => {
         setCheck((value) => !value);
     }
 
     const signupStudentService = async (e) => {
         e.preventDefault();
-
         const stringRegex = /^[a-zA-Z]+$/;
         const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         const identifierRegex = /^(?:2[0-9]{6}|[3-4][0-9]{6}|5000000)$/;
-
         if (!stringRegex.test(firstname)) {
             setError("firstname must be only characters");
         } else if (!stringRegex.test(lastname)) {
@@ -60,31 +58,35 @@ function Signup(props) {
             setError("Numero inscription is invalid");
         } else {
             try {
-                const response = await axios.post('http://localhost:3006/student', {
-                    "firstname": firstname,
-                    "lastname": lastname,
-                    "password": password,
-                    "cardID": nins,
-                    "email": email,
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                await axios.get(`http://localhost:3006/restaurant/find/${RestaurantName}`).then(async (response) => {
+                    if (response.status === 404 || !response.data)
+                        setError("Restaurant name wrong")
+                    else {
+                        await axios.post(`http://localhost:3006/student/${response.data.id}`, {
+                            "firstname": firstname,
+                            "lastname": lastname,
+                            "password": password,
+                            "cardID": nins,
+                            "email": email,
+                        }, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                        window.location.href='http://localhost:3000/login';
+                    }
                 });
 
-                console.log(response.data);
-                window.location.href = 'http://localhost:3000/login';
             } catch (error) {
-                console.error(error);
+                setError(error.response.data.message);
             }
         }
     }
 
     useEffect(() => {
-        // Fetch items from table or API
         const fetchItems = async () => {
             try {
-                const response = await axios.get('http://localhost:3006/items');
+                const response = await axios.get('http://localhost:3006/Restaurant');
                 setItems(response.data);
             } catch (error) {
                 console.error(error);
@@ -93,6 +95,57 @@ function Signup(props) {
 
         fetchItems();
     }, []);
+    const [Name, setName] = useState(null);
+    const [PasswordRes, setPasswordRes] = useState(null);
+    const [Identity, setIdentity] = useState(null);
+    const [phone, setPhone] = useState(null);
+    const [Location, setLocation] = useState(null);
+    const NameHandler = (value => {
+        setName(value);
+    })
+    const PasswordResHandler = (value => {
+        setPasswordRes(value);
+    })
+    const IdentityHandler = (value => {
+        setIdentity(value);
+    })
+
+    const phoneHandler = (value => {
+        setPhone(value);
+    })
+    const LocationHandler = (value => {
+        setLocation(value);
+    })
+    const signupRestaurantService = async (e) => {
+        e.preventDefault();
+        const stringRegex = /^[a-zA-Z]+$/;
+        const phoneRegex = /^[0-9]{8}$/;
+        const identityRegex = /^(?:2000|200[1-9]|20[1-9]\d|2[1-9]\d{2}|[3-4]\d{3}|5000)$/;
+        if (!stringRegex.test(Name)) {
+            setError("Name must be only characters");
+        } else if (!phoneRegex.test(phone)) {
+            setError("phone must be 8 numbers");
+        } else if (!identityRegex.test(Identity)) {
+            setError("Identity not found");
+        } else if (!stringRegex.test(Location)) {
+            setError("Location is wrong");
+        } else {
+            try {
+                await axios.post(`http://localhost:3006/restaurant`, {
+                    "name": Name,
+                    "password": PasswordRes,
+                    "identifiant": Identity,
+                    "telephone": phone,
+                    "localisation": Location,
+                }, { headers: { 'Content-Type': 'application/json', }, });
+                window.location.href = 'http://localhost:3000/login';
+            } catch (error) {
+                console.error(error);
+                setError(error.response.data.message);
+            }
+        }
+    }
+
 
     return (
         <Layout isConnected={props.isConnected}>
@@ -133,9 +186,9 @@ function Signup(props) {
                             <div className="input-group dropdown">
                                 <label htmlFor="items">Items</label>
                                 <div className="select-wrapper">
-                                    <select name="items" id="items">
+                                    <select name="items" id="items" onClick={(e) => RestaurantNameHandler(e.target.value)}>
                                         {items.map((item) => (
-                                            <option key={item.id} value={item.name}>
+                                            <option key={item.id} value={item.name} >
                                                 {item.name}
                                             </option>
                                         ))}
@@ -145,6 +198,7 @@ function Signup(props) {
                             <br />
                             <button className="sign">Sign up</button>
                         </form>
+                        <p className='errorMessage'>{error}</p>
                         <div className="social-message">
                             <div className="line"></div>
                             <p className="message">Sign up with social accounts</p>
@@ -167,34 +221,31 @@ function Signup(props) {
                 ) : (
                     <>
                         <p className="title">Restaurant SignUp</p>
-                        <form className="form">
+                            <form className="form" onSubmit={(e) => signupRestaurantService(e)}>
                             <div className="input-group">
                                 <label htmlFor="Name">Name</label>
-                                <input type="text" name="Name" id="Name" placeholder="" />
+                                <input type="text" name="Name" id="Name" placeholder="" onChange={(e) => NameHandler(e.target.value)} />
                             </div>
                             <div className="input-group">
                                 <label htmlFor="idendity">Identity</label>
-                                <input type="text" name="idendity" id="idendity" placeholder="" />
+                                <input type="text" name="idendity" id="idendity" placeholder="" onChange={(e) => IdentityHandler(e.target.value)} />
                             </div>
                             <div className="input-group">
                                 <label htmlFor="Location">Location</label>
-                                <input type="text" name="Location" id="Location" placeholder="" />
+                                <input type="text" name="Location" id="Location" placeholder="" onChange={(e) => LocationHandler(e.target.value)} />
                             </div>
                             <div className="input-group">
                                 <label htmlFor="phone">Phone Number</label>
-                                <input type="number" name="phone" id="phone" placeholder="" />
-                            </div>
-                            <div className="input-group">
-                                <label htmlFor="Capacity">Capacity</label>
-                                <input type="number" name="Capacity" id="Capacity" placeholder="" />
+                                <input type="number" name="phone" id="phone" placeholder="" onChange={(e) => phoneHandler(e.target.value)} />
                             </div>
                             <div className="input-group">
                                 <label htmlFor="password">Password</label>
-                                <input type="password" name="password" id="password" placeholder="" />
+                                <input type="password" name="password" id="password" placeholder="" onChange={(e) => PasswordResHandler(e.target.value)} />
                             </div>
                             <br />
                             <button className="sign">Sign up</button>
                         </form>
+                        <p className='errorMessage'>{error}</p>
                         <div className="social-message">
                             <div className="line"></div>
                             <p className="message">Sign up with social accounts</p>
