@@ -5,12 +5,12 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import {LoginCredentialsDto} from "./dto/login-credentials.dto";
 
-@Controller('student/:restaurantId')
+@Controller('student/')
 @UseInterceptors(ClassSerializerInterceptor)
 export class StudentController {
   constructor(private readonly studentService: StudentService) { }
 
-  @Post()
+  @Post(":restaurantId")
   create(@Param('restaurantId') restaurantId: string, @Body() createStudentDto: CreateStudentDto) {
     return this.studentService.create(restaurantId, createStudentDto);
   }
@@ -19,11 +19,16 @@ export class StudentController {
         return this.studentService.login(loginCredentialsDto);
   }
 
+
   @Get()
   findAll() {
     return this.studentService.findAll();
-  }
 
+  }
+  @Get("identifier/:identifier")
+  findOneByIdentifier(@Param('identifier') identifier: string) {
+    return this.studentService.findOneByIdentifier(identifier);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.studentService.findOne(id);
@@ -31,11 +36,13 @@ export class StudentController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
+
     return this.studentService.update( id, updateStudentDto);
+
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.studentService.remove( id);
+   return this.studentService.remove( id);
   }
 }

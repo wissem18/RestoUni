@@ -45,6 +45,7 @@ export class StudentService {
 
   async findOne(id: string) {
     return await this.StudentRepository.findOne({
+
           where : { id : id },
           relations : {
             voteStudents:true
@@ -59,9 +60,11 @@ export class StudentService {
   }
 
 
+
    async  update(  id: string, updateStudentDto: UpdateStudentDto) {
 
       const student = await this.findOne(id );
+
     if(!student) {
       throw new NotFoundException("Student not found");
     }
@@ -69,14 +72,17 @@ export class StudentService {
     }
 
 
+
   async  remove(  id: string) {
 
     const student = await this.findOne(id );
+
     if(!student) {
       throw new NotFoundException("Student not found");
     }
     return this.StudentRepository.delete(student.id);
   }
+
 
 
     async login(userData : LoginCredentialsDto){
@@ -108,4 +114,25 @@ export class StudentService {
             throw new NotFoundException("Email or Password Incorrect !");
         }
     }
+
+  async softRemove(id: string) {
+    const student = await this.findOne(id);
+    if(!student) {
+      throw new NotFoundException("Student not found");
+    }
+    return this.StudentRepository.softDelete(student.id);
+  }
+  async findOneByIdentifier(identifier: string) {
+    const identifiant = parseInt(identifier);
+    return await this.StudentRepository.findOne({
+      where: { cardID: identifiant }  
+        }).then(Student => {
+            if(!Student){
+                throw new NotFoundException("Student not found");
+            }
+            return Student;
+        }
+    );
+  }
+
 }

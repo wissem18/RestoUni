@@ -1,19 +1,22 @@
-import {IsNotEmpty, IsString} from "class-validator";
+
+/* eslint-disable prettier/prettier */
+import {IsNotEmpty} from "class-validator";
+import validatorsErrorMessages from "src/validator-error-messagets";
 
 export class CreateMenuDto {
-    @IsNotEmpty()
-    @IsString()
-    entrée: string;
+    @IsNotEmpty({ message: validatorsErrorMessages.REQUIRED })
 
-    @IsNotEmpty()
-    @IsString()
+    entrée: string;
+    @IsNotEmpty({ message: validatorsErrorMessages.REQUIRED })
+
     plat: string;
-    @IsNotEmpty()
-    @IsString()
+    @IsNotEmpty({ message: validatorsErrorMessages.REQUIRED })
+
     dessert: string;
 
-    @IsNotEmpty()
-    @IsString()
+    @IsNotEmpty({ message: validatorsErrorMessages.REQUIRED })
+
+
     date : string;
 
 

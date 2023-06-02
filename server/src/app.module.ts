@@ -2,7 +2,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {TypeOrmModule} from "@nestjs/typeorm";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { StudentModule } from './student/student.module';
 import { MenuModule } from './menu/menu.module';
@@ -17,7 +17,7 @@ dotenv.config();
 
       type: 'mysql',
       host: "localhost",
-      port: 3308,
+      port: 3306,
       username: "root",
       password: "",
       database: "webproject",
