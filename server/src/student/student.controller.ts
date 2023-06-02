@@ -3,6 +3,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Cla
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import {LoginCredentialsDto} from "./dto/login-credentials.dto";
 
 @Controller('student/')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -12,6 +13,10 @@ export class StudentController {
   @Post(":restaurantId")
   create(@Param('restaurantId') restaurantId: string, @Body() createStudentDto: CreateStudentDto) {
     return this.studentService.create(restaurantId, createStudentDto);
+  }
+  @Post('login')
+    login(@Body() loginCredentialsDto: LoginCredentialsDto) {
+        return this.studentService.login(loginCredentialsDto);
   }
 
 
