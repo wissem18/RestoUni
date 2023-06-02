@@ -41,7 +41,7 @@ export class RestaurantController {
     return this.restaurantService.findOne(id);
   }
   @Get('identifier/:identifier')
-  findByIdentifer(@Param('identifier') identifier: string) {
+  findByIdentifer(@Param('identifier') identifier: number) {
 
     return this.restaurantService.findByIdentifier(identifier);
   }
