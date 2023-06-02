@@ -8,7 +8,7 @@ import {Repository} from "typeorm";
 import {Restaurant} from "./entities/restaurant.entity";
 import {Menu} from "../menu/entities/menu.entity";
 import {Vote} from "../vote/entities/vote.entity";
-
+import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
@@ -17,8 +17,12 @@ export class RestaurantService {
         @InjectRepository(Restaurant)
         private readonly RestaurantRepository: Repository<Restaurant>
     ) {}
-  create(createRestaurantDto: CreateRestaurantDto) {
-    return  this.RestaurantRepository.save(createRestaurantDto);
+  async create(createRestaurantDto: CreateRestaurantDto) {
+        const restaurant = await this.RestaurantRepository.create(createRestaurantDto);
+        restaurant.salt=  await bcrypt.genSalt();
+        restaurant.password =  await bcrypt.hash(restaurant.password, restaurant.salt);
+
+    return  this.RestaurantRepository.save(restaurant);
   }
 
     async findAll(): Promise<Restaurant[]> {
