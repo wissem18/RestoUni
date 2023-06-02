@@ -17,7 +17,8 @@ export class Restaurant extends TimeStampEntity {
     @Column({ type: "varchar", length: 64 })
     name: string;
 
-    @Column({ type: "varchar", length: 26 })
+    @Exclude()
+    @Column()
     password: string;
 
     @Unique(["identifiant"])

@@ -29,13 +29,12 @@ export class RestaurantService {
         const restaurant = await this.RestaurantRepository.create(createRestaurantDto);
         restaurant.salt=  await bcrypt.genSalt();
         restaurant.password =  await bcrypt.hash(restaurant.password, restaurant.salt);
-
         try{
           await this.RestaurantRepository.save(restaurant);
       }catch(e){
           throw new ConflictException("Name or Identifiant or or telephone already exists !");
       }
-    
+      
       const returnedRestaurant = {
         id: restaurant.id,
         name: restaurant.name,
@@ -145,10 +144,11 @@ export class RestaurantService {
         password : restauData.password
     }
     const restauFound = await this.RestaurantRepository.createQueryBuilder("restau").
-    where("restau.identifiant=: identifiant", {
+    where("restau.identifiant = :identifiant", {
         identifiant: restau.identifiant
     }).getOne();
     if( !restauFound ){
+      console.log("1");
         throw new NotFoundException("identifiant or Password Incorrect !");
     }
     const hashedPassword = await bcrypt.hash(restau.password , restauFound.salt);
