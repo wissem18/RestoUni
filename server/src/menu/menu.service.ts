@@ -6,13 +6,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {Equal, Repository} from 'typeorm';
 import { Menu } from './entities/menu.entity';
 import { RestaurantService } from 'src/restaurant/restaurant.service';
-import {UpdateStudentDto} from "../student/dto/update-student.dto";
 
 
 @Injectable()
-export class MenuService {
-
-  
+export class MenuService {  
   constructor(
     @InjectRepository(Menu)
     private readonly MenuRepository: Repository<Menu>,
@@ -33,23 +30,14 @@ export class MenuService {
       });
     }
 
-    findAll(restaurantId: string): Promise<Menu[]> {
+    findAll(): Promise<Menu[]> {
       return this.MenuRepository.find({
-        where: {
-          restaurant: {
-            id: restaurantId
-          }
-        }
       });
     }
 
-  async findOne(id: string, restaurantId: string) {
-    const restaurant = await this.RestaurantService.findOne(restaurantId);
-   if(!restaurant) {
-      throw new NotFoundException("Restaurant not found");
-    }
+  async findOne(id: string) {
     return await this.MenuRepository.findOne({
-      where : {restaurant : {id : restaurantId } , id : id },
+      where : {id : id },
     }).then(menu => {
           if(!menu) {
             throw new NotFoundException("Menu not found");
@@ -61,10 +49,9 @@ export class MenuService {
 
 
 
-  async  update(restaurantid : string ,  id: string, updateMenuDto: UpdateMenuDto) {
+  async  update(  id: string, updateMenuDto: UpdateMenuDto) {
 
-    const menu = await this.findOne(restaurantid , id);
-
+    const menu = await this.findOne(id);
     if(!menu) {
       throw new NotFoundException("Menu not found");
     }
@@ -72,9 +59,9 @@ export class MenuService {
   }
 
 
-  async  remove(restaurantid : string ,  id: string) {
+  async  remove(  id: string) {
 
-    const menu = await this.findOne(restaurantid , id);
+    const menu = await this.findOne( id);
     if(!menu) {
       throw new NotFoundException("Menu not found");
     }
