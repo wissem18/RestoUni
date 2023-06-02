@@ -34,46 +34,30 @@ export class OptionService {
     });
   }
 
-  findAll(voteId: string): Promise<Option[]> {
-    //check if the vote exists
-    return this.voteService.findOne(voteId).then((vote) => {
-        if(!vote) {
-            throw new NotFoundException("Vote not found");
-        }
-        return this.optionRepository.find({
-            where: {
-            vote: {
-                id: voteId
-            }
-            }
-        });
-    });
+  findAll(): Promise<Option[]> {
+        return this.optionRepository.find({});
   }
 
 
 
-    findOne(voteId: string, optionId: string): Promise<Option> {
+    findOne(optionId: string): Promise<Option> {
         return this.optionRepository.findOne({
             where: {
-                id: Equal(optionId),
-                vote: {
-                    id: voteId
-                }
+                id: optionId,
             }
         }).then(option => {
             if (!option) {
                 throw new NotFoundException("Option not found");
             }
             return option;
-            //////
         });
     }
 
 
 
-    update(voteid: string , id: string, updateOptionDto: UpdateOptionDto) {
+    update(id: string, updateOptionDto: UpdateOptionDto) {
 
-        this.findOne(voteid , id).then((Option) => {
+        this.findOne(id).then((Option) => {
             if(!Option) {
                 throw new NotFoundException("Option not found");
             }
@@ -83,8 +67,8 @@ export class OptionService {
 
 
 
-remove(voteid: string, id: string) {
-    this.findOne(voteid , id).then((Option) => {
+remove( id: string) {
+    this.findOne( id).then((Option) => {
         if(!Option) {
             throw new NotFoundException("Option not found");
         }
