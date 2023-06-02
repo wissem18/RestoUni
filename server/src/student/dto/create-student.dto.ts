@@ -14,7 +14,6 @@ export class CreateStudentDto {
     @IsNotEmpty()
     password: string;
 
-    @IsString()
     @IsNotEmpty()
     cardID:number; 
 

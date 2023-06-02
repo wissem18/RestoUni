@@ -21,21 +21,26 @@ export class OptionService {
   ) { }
 
   create(voteId:string, CreateoptionDto: CreateOptionDto): Promise<Option> {
-    // check if the vote exists
     return this.voteService.findOne(voteId).then((vote) => {  
       if(!vote) { 
 
         throw new NotFoundException("Vote not found");
       }
-      // create the option
-      const option = this.optionRepository.create(CreateoptionDto);
-      option.vote = vote;
+      const option = new Option();
+      option.description=CreateoptionDto.description;
+      option.vote=vote;
       return this.optionRepository.save(option);
     });
   }
 
-  findAll(): Promise<Option[]> {
-        return this.optionRepository.find({});
+  findAll(voteId:string): Promise<Option[]> {
+    return this.voteService.findOne(voteId).then((vote) => {  
+        if(!vote) { 
+  
+          throw new NotFoundException("Vote not found");
+        }
+        return this.optionRepository.find({where:{vote:{id:voteId}}});
+    })
   }
 
 

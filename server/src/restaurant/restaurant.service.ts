@@ -25,7 +25,7 @@ export class RestaurantService {
         return await this.RestaurantRepository.find({
                 relations : {
                     Menus: true,
-                    Students:true,
+                    Students:true,  
                     Votes:true
                 }
             },

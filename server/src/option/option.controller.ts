@@ -15,14 +15,14 @@ export class OptionController {
 
 
   @Post(":voteId")
-  create(@Param('votetId') voteId: string, @Body() createOptionDto: CreateOptionDto) {
+  create(@Param('voteId') voteId: string, @Body() createOptionDto: CreateOptionDto) {
     return this.optionService.create(voteId, createOptionDto);
 
   }
 
-  @Get()
-  findAll(): Promise<Option[]> {
-    return this.optionService.findAll();
+  @Get(":voteId")
+  findAll(@Param('votetId') voteId: string): Promise<Option[]> {
+    return this.optionService.findAll(voteId);
   }
 
   @Get(':id')

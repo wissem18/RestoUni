@@ -11,10 +11,11 @@ import { VoteStudent } from "src/vote-student/entities/vote-student.entity";
 export class Vote extends TimeStampEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
-    
+    @Column()
+    name:string;
     @Column({ type: "varchar", length: 64 })
-    description: string;
-
+    description: string; 
+    
     @OneToMany(() => Option, (Option) => Option.vote,
     { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE"})
     Options: Option[];

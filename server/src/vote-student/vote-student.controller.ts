@@ -18,10 +18,10 @@ import { VoteStudentService } from './vote-student.service';
 export class VoteStudentController {
   constructor(private readonly voteStudentService: VoteStudentService) {}
 
-  @Post(':restaurantId/:studentId/:voteId')
-  create(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string,
-         @Body() optionId: string) {
-    return this.voteStudentService.create(voteId,  studentId, optionId, restaurantId);
+  @Post(':studentId/:voteId')
+  create( @Param('studentId') studentId: string, @Param('voteId') voteId: string,
+         @Body("optionId")optionId:string) {
+    return this.voteStudentService.create(voteId,  studentId, optionId);
   }
 
   @Get('studentId/:voteId')

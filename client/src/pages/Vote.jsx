@@ -3,13 +3,27 @@ import Layout from "../components/Layout";
 import { Box, Card, CardActionArea, CardContent } from "@mui/material";
 import VoteCard from "../components/VoteCard";
 import VoteForm from "../components/VoteForm";
-
+import axios from "axios";
 const Vote = (props) => {
-  const Votes = [
-    { id: 1, name: "name1", description: "decri1", options: ["choix1", "choix2", "choix3"] },
-    { id: 2, name: "name2", description: "decri2", options: ["choix12", "choix22"] }
-  ];
+ const [votes, setVotes] = React.useState([]);
   const [showVoteform, setShowVoteform] = React.useState(false);
+  React.useEffect(() => {
+  const fetchVotes = async () => {
+    try {
+      const response = await axios.get('http://localhost:3006/vote/eeb2ec84-d8fe-4505-9184-39c6e91ff092');
+      const votesWithExtractedOptions = await response.data.map((vote) => ({
+        ...vote,
+        options: vote.Options.map((option) => [option.id, option.description]),
+      }));
+  
+      setVotes(votesWithExtractedOptions);   
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  fetchVotes();
+}, []);
   const handleVote = () => {
     setShowVoteform(true);
   };
@@ -19,7 +33,8 @@ const Vote = (props) => {
   };
   return (
     <Layout isConnected={props.isConnected}>
-      {props.isUser ? (
+
+      { props.isUser ? (
         <Box
           sx={{
             display: "flex",
@@ -27,11 +42,11 @@ const Vote = (props) => {
             justifyContent: "center",
           }}
         >
-          {Votes.map((vote) => (
+          {votes.map((vote) => (
             <Card key={vote.id} sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
               <CardActionArea>
-                <CardContent>
-                  <VoteCard name={vote.name} description={vote.description} options={vote.options} isUser={props.isUser} />
+                <CardContent> 
+                  <VoteCard name={vote.name} description={vote.description} options={vote.options} isUser={props.isUser} voteId={vote.id} />
                 </CardContent>
               </CardActionArea>
             </Card>
@@ -46,7 +61,7 @@ const Vote = (props) => {
               justifyContent: "center",
             }}
           >
-            {Votes.map((vote) => (
+            {votes.map((vote) => (
               <Card key={vote.id} sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
                 <CardActionArea>
                   <CardContent>

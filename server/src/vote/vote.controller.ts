@@ -24,12 +24,13 @@ export class VoteController {
 
   @Post(":restaurantId")
   create(@Body() createVoteDto: CreateVoteDto,@Param("restaurantId") restaurantId: string) {
+    console.log(createVoteDto);
     return this.voteService.create(restaurantId,createVoteDto);
   }
 
-  @Get()
-  findAll() {
-    return this.voteService.findAll();
+  @Get(':restaurantId')
+  findAll(@Param('restaurantId') restaurantId: string) {
+    return this.voteService.findAll(restaurantId);
   }
 
   @Get(':id')
