@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { StudentController } from './student.controller';
@@ -19,7 +18,6 @@ import {PassportModule} from "@nestjs/passport";
 import {JwtModule, JwtService} from "@nestjs/jwt";
 import * as dotenv from "dotenv";
 dotenv.config();
-
 @Module({
   controllers: [StudentController],
   providers: [StudentService,VoteService,OptionService,VoteStudentService,RestaurantService],

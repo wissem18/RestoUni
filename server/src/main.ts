@@ -2,16 +2,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {ValidationPipe} from "@nestjs/common";
-import * as cors from 'cors';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import helmet from 'helmet';
 
 async function bootstrap() {
 
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200
+    }
+
   const app = await NestFactory.create(AppModule);
-  app.use(cors());
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
+  app.enableCors(corsOptions);
+  app.use(helmet());
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   await app.listen(3006);
 
 }

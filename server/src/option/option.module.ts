@@ -9,9 +9,8 @@ import { Option } from './entities/option.entity';
 
 import { VoteService } from 'src/vote/vote.service';
 import { Vote } from 'src/vote/entities/vote.entity';
-import {VoteModule} from "../vote/vote.module";
-import {RestaurantService} from "../restaurant/restaurant.service";
-import {Restaurant} from "../restaurant/entities/restaurant.entity";
+import { RestaurantService } from 'src/restaurant/restaurant.service';
+import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
 
 
 @Module({
