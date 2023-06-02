@@ -17,12 +17,13 @@ export class Restaurant extends TimeStampEntity {
     @Column({ type: "varchar", length: 64 })
     name: string;
 
-    @Column({ type: "varchar", length: 26 })
+    @Exclude()
+    @Column()
     password: string;
 
     @Unique(["identifiant"])
-    @Column({ type: "varchar", length: 64 })
-    identifiant: string;
+    @Column()
+    identifiant: number;
 
     @Column({ type: "varchar", length: 64 })
     localisation: string;
@@ -31,6 +32,9 @@ export class Restaurant extends TimeStampEntity {
     @Column()
     telephone: number;
 
+    @Column()
+    @Exclude()
+    salt: string;
 
     @OneToMany(() => Student, (Student) => Student.restaurant,
         { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE" })

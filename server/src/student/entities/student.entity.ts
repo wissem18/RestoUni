@@ -25,10 +25,14 @@ export class Student extends TimeStampEntity{
   @Column({ length: 50 })
   email: string;
   
+
+  @Exclude()
   @Column()
    password:string;
 
-  
+  @Column()
+  @Exclude()
+  salt:string;
   @ManyToOne(()=>Restaurant , (Restaurant)=>Restaurant.Students)
   restaurant:Restaurant;
 

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { StudentController } from './student.controller';
@@ -15,11 +14,16 @@ import {OptionService} from "../option/option.service";
 import {VoteStudentService} from "../vote-student/vote-student.service";
 import {RestaurantService} from "../restaurant/restaurant.service";
 import {Restaurant} from "../restaurant/entities/restaurant.entity";
-
+import {PassportModule} from "@nestjs/passport";
+import {JwtModule, JwtService} from "@nestjs/jwt";
+import * as dotenv from "dotenv";
+dotenv.config();
 @Module({
   controllers: [StudentController],
   providers: [StudentService,VoteService,OptionService,VoteStudentService,RestaurantService],
-  imports: [TypeOrmModule.forFeature([Student, Vote,Option,VoteStudent,Restaurant])],
+  imports: [TypeOrmModule.forFeature([Student, Vote,Option,VoteStudent,Restaurant]),
+  PassportModule.register({defaultStrategy:'jwt'}),
+  JwtModule.register({global:true,  secret: "secretkey", signOptions :{expiresIn : 3600}})],
   exports: [StudentService,TypeOrmModule]
 
 })
