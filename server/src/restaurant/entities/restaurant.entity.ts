@@ -29,6 +29,7 @@ export class Restaurant extends TimeStampEntity {
     @Column()
     telephone: number;
 
+
     @OneToMany(() => Student, (Student) => Student.restaurant,
     { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE"})
     @JoinTable()
