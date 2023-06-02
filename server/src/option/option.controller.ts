@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ClassSerializerInterceptor} from '@nestjs/common';
 import {OptionService} from "./option.service";
@@ -19,24 +20,24 @@ export class OptionController {
 
   }
 
-  @Get('/vote/:voteId')
-  findAll(@Param("voteId") voteId: string): Promise<Option[]> {
-    return this.optionService.findAll(voteId);
+  @Get()
+  findAll(): Promise<Option[]> {
+    return this.optionService.findAll();
   }
 
-  @Get(':id/vote/:voteId')
-  findOne(@Param('id') id: string, @Param('voteId') voteId: string) {
-    return this.optionService.findOne(voteId, id);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.optionService.findOne( id);
   }
 
-  @Patch(':id/vote/:voteId')
-  update(@Param('id') id: string, @Body() updateOptionDTO: UpdateOptionDto , @Param('voteId') voteId: string) {
-    return this.optionService.update(voteId ,id, updateOptionDTO);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateOptionDTO: UpdateOptionDto ) {
+    return this.optionService.update(id, updateOptionDTO);
   }
 
-  @Delete(':id/vote/:voteId')
-  remove(@Param('id') id: string, @Param('voteId') voteId: string) {
-    return this.optionService.remove(voteId, id);
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.optionService.remove(id);
   }
 
 }

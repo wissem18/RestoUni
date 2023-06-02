@@ -14,9 +14,11 @@ export class StudentController {
     return this.studentService.create(restaurantId, createStudentDto);
   }
 
-  @Get(":restaurantId")
-  findAll(@Param('restaurantId') restaurantId: string) {
-    return this.studentService.findAll(restaurantId);
+
+  @Get()
+  findAll() {
+    return this.studentService.findAll();
+
   }
   @Get("identifier/:identifier")
   findOneByIdentifier(@Param('identifier') identifier: string) {
@@ -29,11 +31,13 @@ export class StudentController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentService.update(id, updateStudentDto);
+
+    return this.studentService.update( id, updateStudentDto);
+
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.studentService.remove(id);
+   return this.studentService.remove( id);
   }
 }

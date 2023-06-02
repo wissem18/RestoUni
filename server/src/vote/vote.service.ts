@@ -5,8 +5,6 @@ import { UpdateVoteDto } from './dto/update-vote.dto';
 import {Equal, Repository} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from './entities/vote.entity';
-
-import { RestaurantService } from 'src/restaurant/restaurant.service';
 import {Restaurant} from "../restaurant/entities/restaurant.entity";
 
 @Injectable()
@@ -34,9 +32,8 @@ export class VoteService {
       return this.voteRepository.save(vote);
   }
 
-  async findAll(restaurantID:string): Promise<Vote[]> {
+  async findAll(): Promise<Vote[]> {
     return await this.voteRepository.find({
-      where : {restaurant : {id : restaurantID}},
       relations : {
         Options: true,
         voteStudents:true
@@ -65,11 +62,8 @@ export class VoteService {
   async update(id: string, updateVoteDto: UpdateVoteDto): Promise<Vote> {
     const vote = await this.voteRepository.findOne({ where: { id: id } });
     if (!vote) {
-      // Handle error when vote is not found
       throw new NotFoundException(`Vote with id ${id} not found`);
     }
-
-    // Update the vote object with the new data
     const updatedVote = Object.assign(vote, updateVoteDto);
     return await this.voteRepository.save(updatedVote);
   }
@@ -77,7 +71,6 @@ export class VoteService {
   async remove(id: string): Promise<void> {
     const vote = await this.voteRepository.findOne({ where: { id: id } });
     if (!vote) {
-      // Handle error when vote is not found
       throw new NotFoundException(`Vote with id ${id} not found`);
     }
     await this.voteRepository.remove(vote);
