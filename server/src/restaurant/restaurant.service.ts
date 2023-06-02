@@ -102,7 +102,7 @@ export class RestaurantService {
       return Restaurant;
     });
   }
-  findByIdentifier(identifier: string): Promise<Restaurant> {
+  findByIdentifier(identifier: number): Promise<Restaurant> {
     return this.RestaurantRepository.findOne({
       where: {
         identifiant: identifier
