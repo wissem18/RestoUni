@@ -20,7 +20,7 @@ export class VoteStudentController {
 
   @Post(':restaurantId/:studentId/:voteId')
   create(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string,
-         @Body() optionId: string) {
+         @Body("optionId") optionId: string) {
     return this.voteStudentService.create(voteId,  studentId, optionId, restaurantId);
   }
 

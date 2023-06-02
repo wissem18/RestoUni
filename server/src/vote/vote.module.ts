@@ -12,9 +12,7 @@ import {RestaurantModule} from "../restaurant/restaurant.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Vote,Restaurant]),
-      RestaurantModule
-
+    TypeOrmModule.forFeature([Vote,Restaurant])
   ],
   controllers: [VoteController],
   providers: [VoteService,RestaurantService],
