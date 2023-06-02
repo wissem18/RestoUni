@@ -70,6 +70,7 @@ export class MenuService {
   async softDelete(restaurantid : string ,  id: string) {
       
       const menu = await this.findOne(id);
+
       if(!menu) {
         throw new NotFoundException("Menu not found");
       }

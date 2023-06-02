@@ -77,6 +77,7 @@ remove( id: string) {
 }
 softRemove(voteid: string, id: string) {
     this.findOne(id).then((Option) => {
+
         if(!Option) {
             throw new NotFoundException("Option not found");
         }
