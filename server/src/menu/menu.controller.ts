@@ -14,23 +14,23 @@ export class MenuController {
     return this.menuService.create(restaurantId, createMenuDto);
   }
 
-  @Get('/restaurant/:restaurantId')
-  findAll(@Param("restaurantId") restaurantId: string): Promise<Menu[]> {
-    return this.menuService.findAll(restaurantId);
+  @Get()
+  findAll(): Promise<Menu[]> {
+    return this.menuService.findAll();
   }
 
-  @Get(':id/restaurant/:restaurantId')
-  findOne(@Param('id') id: string, @Param('restaurantId') restaurantId: string) {
-    return this.menuService.findOne(id, restaurantId);
+  @Get(':id')
+  findOne(@Param('id') id: string ) {
+    return this.menuService.findOne(id);
   }
 
-  @Patch(':id/restaurant/:restaurantId')
-  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto, @Param('restaurantId') restaurantId: string) {
-    return this.menuService.update(id,restaurantId, updateMenuDto);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
+    return this.menuService.update(id, updateMenuDto);
   }
 
-  @Delete(':id/restaurant/:restaurantId')
-  remove(@Param('id') id: string, @Param('restaurantId') restaurantId: string) {
-    return this.menuService.remove(id,restaurantId);
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.menuService.remove(id);
   }
 }

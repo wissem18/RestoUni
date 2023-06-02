@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -14,22 +15,22 @@ export class StudentController {
   }
 
   @Get()
-  findAll(@Param('restaurantId') restaurantId: string) {
-    return this.studentService.findAll(restaurantId);
+  findAll() {
+    return this.studentService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Param('restaurantId') restaurantId: string) {
-    return this.studentService.findOne(id, restaurantId);
+  findOne(@Param('id') id: string) {
+    return this.studentService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto, @Param('restaurantId') restaurantId: string) {
-    return this.studentService.update(restaurantId, id, updateStudentDto);
+  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
+    return this.studentService.update( id, updateStudentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string, @Param('restaurantId') restaurantId: string) {
-    return this.studentService.remove(restaurantId, id);
+  remove(@Param('id') id: string) {
+    return this.studentService.remove( id);
   }
 }
