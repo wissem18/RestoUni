@@ -8,14 +8,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {RestaurantService} from "../restaurant/restaurant.service";
 import {Restaurant} from "../restaurant/entities/restaurant.entity";
-import {RestaurantModule} from "../restaurant/restaurant.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Vote,Restaurant])
+    TypeOrmModule.forFeature([Vote,Restaurant]),
   ],
   controllers: [VoteController],
-  providers: [VoteService,RestaurantService],
+  providers: [VoteService,RestaurantService,RestaurantService],
   exports: [VoteService,TypeOrmModule]
 
 })
