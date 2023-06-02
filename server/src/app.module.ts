@@ -23,7 +23,7 @@ dotenv.config();
       password: "",
       database: "webproject",
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     }),
     RestaurantModule,
     StudentModule,

@@ -8,9 +8,12 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  ClassSerializerInterceptor
+  ClassSerializerInterceptor,
+  UseGuards
 } from '@nestjs/common';
 import { VoteStudentService } from './vote-student.service';
+import { AuthGuard } from 'src/student/Guards/auth.guard';
+import { RestauAuthGuard } from 'src/restaurant/Guards/restau.auth.guard';
 
 
 @Controller('vote-student')
@@ -19,6 +22,8 @@ export class VoteStudentController {
   constructor(private readonly voteStudentService: VoteStudentService) {}
 
   @Post(':restaurantId/:studentId/:voteId')
+  @UseGuards(AuthGuard)
+
   create(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string,
 
          @Body("optionId") optionId: string) {
@@ -26,6 +31,8 @@ export class VoteStudentController {
   }
 
   @Get('studentId/:voteId')
+  @UseGuards(RestauAuthGuard)
+
   findOne( @Param('studentId') studentId: string, @Param('voteId') voteId: string) {
 
     return this.voteStudentService.findOne( voteId, studentId);
