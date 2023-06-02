@@ -8,23 +8,30 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  ClassSerializerInterceptor
+  ClassSerializerInterceptor,
+  Res
 } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { v4 as uuid } from 'uuid';
 import {Menu} from "../menu/entities/menu.entity";
+import {RestauLoginCredentialsDto} from "./dto/restaulogin-credentials.dto";
 
 @Controller('restaurant')
 @UseInterceptors(ClassSerializerInterceptor)
 export class RestaurantController {
  constructor(private readonly restaurantService: RestaurantService) {}
 
-  @Post()
-  create(@Body() createRestaurantDto: CreateRestaurantDto) {
-    return this.restaurantService.create(createRestaurantDto);
-  }
+ @Post('login')
+ login(@Body() RestauLoginCredentialsDto: RestauLoginCredentialsDto) {
+     return this.restaurantService.login(RestauLoginCredentialsDto);
+} 
+ 
+ @Post()
+ create(@Body() createRestaurantDto: CreateRestaurantDto) {
+   return this.restaurantService.create(createRestaurantDto);
+ }
 
   @Get()
   findAll() {

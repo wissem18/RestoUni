@@ -10,15 +10,15 @@ import {LoginCredentialsDto} from "./dto/login-credentials.dto";
 export class StudentController {
   constructor(private readonly studentService: StudentService) { }
 
+  @Post('login')
+  login(@Body() loginCredentialsDto: LoginCredentialsDto) {
+      return this.studentService.login(loginCredentialsDto);
+} 
+  
   @Post(":restaurantId")
   create(@Param('restaurantId') restaurantId: string, @Body() createStudentDto: CreateStudentDto) {
     return this.studentService.create(restaurantId, createStudentDto);
   }
-  @Post('login')
-    login(@Body() loginCredentialsDto: LoginCredentialsDto) {
-        return this.studentService.login(loginCredentialsDto);
-  }
-
 
   @Get()
   findAll() {

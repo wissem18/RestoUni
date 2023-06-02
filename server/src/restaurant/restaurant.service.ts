@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import {Injectable, NotFoundException} from '@nestjs/common'
+import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
@@ -11,7 +11,8 @@ import {Restaurant} from "./entities/restaurant.entity";
 import {Menu} from "../menu/entities/menu.entity";
 import {Vote} from "../vote/entities/vote.entity";
 import * as bcrypt from 'bcrypt';
-
+import {JwtService} from "@nestjs/jwt";
+import { RestauLoginCredentialsDto } from './dto/restaulogin-credentials.dto';
 
 
 @Injectable()
@@ -19,15 +20,33 @@ export class RestaurantService {
 
     constructor(
         @InjectRepository(Restaurant)
-        private readonly RestaurantRepository: Repository<Restaurant>
+        private readonly RestaurantRepository: Repository<Restaurant>,
+        private jwtService: JwtService
     ) {}
+
+
   async create(createRestaurantDto: CreateRestaurantDto) {
         const restaurant = await this.RestaurantRepository.create(createRestaurantDto);
         restaurant.salt=  await bcrypt.genSalt();
         restaurant.password =  await bcrypt.hash(restaurant.password, restaurant.salt);
 
-    return  this.RestaurantRepository.save(restaurant);
-
+        try{
+          await this.RestaurantRepository.save(restaurant);
+      }catch(e){
+          throw new ConflictException("Name or Identifiant or or telephone already exists !");
+      }
+    
+      const returnedRestaurant = {
+        id: restaurant.id,
+        name: restaurant.name,
+        identifiant: restaurant.identifiant,
+        localisation: restaurant.localisation,
+        telephone: restaurant.telephone
+      }
+    
+      return({
+            token: await this.jwtService.signAsync(returnedRestaurant)
+        });
   }
 
   async findAll(): Promise<Restaurant[]> {
@@ -119,4 +138,37 @@ export class RestaurantService {
       return Restaurant;
     });
   }
+
+  async login( restauData : RestauLoginCredentialsDto){
+    const restau = {
+        identifiant : restauData.identifiant,
+        password : restauData.password
+    }
+    const restauFound = await this.RestaurantRepository.createQueryBuilder("restau").
+    where("restau.identifiant=: identifiant", {
+        identifiant: restau.identifiant
+    }).getOne();
+    if( !restauFound ){
+        throw new NotFoundException("identifiant or Password Incorrect !");
+    }
+    const hashedPassword = await bcrypt.hash(restau.password , restauFound.salt);
+    if(hashedPassword == restauFound.password) {
+
+        const payload = {
+            id: restauFound.id,
+            name: restauFound.name,
+            identifiant: restauFound.identifiant,
+            localisation: restauFound.localisation,
+            telephone: restauFound.telephone
+        }
+        return({
+            token: await this.jwtService.signAsync(payload)
+        })
+    }else {
+        throw new NotFoundException("identifinat or Password Incorrect !");
+    }
+}
+
+
+
 }
