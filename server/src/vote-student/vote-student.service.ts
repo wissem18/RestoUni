@@ -52,7 +52,7 @@ private readonly VoteService: VoteService,
                 if (!vote) {
                     throw new NotFoundException("Vote not found");
                 }
-                return this.OptionService.findOne(voteId, optionId).then((option) => {
+                return this.OptionService.findOne(optionId).then((option) => {
                     if (!option) {
                         throw new NotFoundException("Option not found");
                     }
@@ -67,8 +67,8 @@ private readonly VoteService: VoteService,
         });
     });
   });
+    });
 }
-
 
   findOne(voteID : string , studentID : string) {
     return this.VoteService.findOne(voteID).then((vote) => {
@@ -99,4 +99,5 @@ private readonly VoteService: VoteService,
         );
     }
 
+  );}
 }
