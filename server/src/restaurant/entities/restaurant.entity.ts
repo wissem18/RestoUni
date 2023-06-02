@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 
 import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
 import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -27,6 +28,7 @@ export class Restaurant extends TimeStampEntity {
 
     @Column()
     telephone: number;
+
 
     @OneToMany(() => Student, (Student) => Student.restaurant,
     { cascade: true, onUpdate: "CASCADE", onDelete: "CASCADE"})

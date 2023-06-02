@@ -1,12 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Equal, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
-import { Option } from 'src/option/entities/option.entity';
-import {VoteStudent} from "../vote-student/entities/vote-student.entity";
-import { Vote } from 'src/vote/entities/vote.entity';
 import {Restaurant} from "../restaurant/entities/restaurant.entity";
 
 
@@ -15,12 +13,6 @@ export class StudentService {
   constructor(
     @InjectRepository(Student)
     private readonly StudentRepository: Repository<Student>,
-    @InjectRepository(Vote)
-    private readonly VoteRepositery: Repository<Vote>,
-    @InjectRepository(VoteStudent)
-    private readonly VoteStudentRepositery: Repository<VoteStudent>,
-    @InjectRepository(Option)
-    private readonly OptionRepositery: Repository<Option>,
     @InjectRepository(Restaurant)
     private readonly RestaurantRepository: Repository<Restaurant>,
   ) {}
@@ -36,13 +28,8 @@ export class StudentService {
 
 
 
-  async findAll(RestaurantId: string) {
-    const restaurant = await this.RestaurantRepository.findOne({where : {id  : Equal(RestaurantId)}});
-    if(!restaurant) {
-      throw new NotFoundException("Restaurant not found");
-    }
+  async findAll() {
     return this.StudentRepository.find({
-      where : {restaurant : {id : RestaurantId}},
       relations : {
         voteStudents:true
       }
@@ -50,13 +37,9 @@ export class StudentService {
     );
   }
 
-  async findOne(id: string, restaurantId: string) {
-    const restaurant = await this.RestaurantRepository.findOne({where : {id  : Equal(restaurantId)}});
-    if(!restaurant) {
-      throw new NotFoundException("Restaurant not found");
-    }
+  async findOne(id: string) {
     return await this.StudentRepository.findOne({
-          where : {restaurant : {id : restaurantId } , id : id },
+          where : { id : id },
           relations : {
             voteStudents:true
           }
@@ -70,9 +53,9 @@ export class StudentService {
   }
 
 
-   async  update(restaurantid : string ,  id: string, updateStudentDto: UpdateStudentDto) {
+   async  update(  id: string, updateStudentDto: UpdateStudentDto) {
 
-      const student = await this.findOne(id, restaurantid );
+      const student = await this.findOne(id );
     if(!student) {
       throw new NotFoundException("Student not found");
     }
@@ -80,9 +63,9 @@ export class StudentService {
     }
 
 
-  async  remove(restaurantid : string ,  id: string) {
+  async  remove(  id: string) {
 
-    const student = await this.findOne(id,restaurantid );
+    const student = await this.findOne(id );
     if(!student) {
       throw new NotFoundException("Student not found");
     }
