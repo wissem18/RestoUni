@@ -76,6 +76,13 @@ export class StudentService {
     }
     return this.StudentRepository.delete(student.id);
   }
+  async softRemove(id: string) {
+    const student = await this.findOne(id);
+    if(!student) {
+      throw new NotFoundException("Student not found");
+    }
+    return this.StudentRepository.softDelete(student.id);
+  }
   async findOneByIdentifier(identifier: string) {
     const identifiant = parseInt(identifier);
     return await this.StudentRepository.findOne({

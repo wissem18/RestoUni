@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
-import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Exclude } from "class-transformer";
 import { v4 as uuid } from "uuid";
 import { Student } from "src/student/entities/student.entity";
@@ -13,18 +13,21 @@ export class Restaurant extends TimeStampEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
+    @Unique(["name"])
     @Column({ type: "varchar", length: 64 })
     name: string;
 
     @Column({ type: "varchar", length: 26 })
     password: string;
 
+    @Unique(["identifiant"])
     @Column({ type: "varchar", length: 64 })
     identifiant: string;
 
     @Column({ type: "varchar", length: 64 })
     localisation: string;
 
+    @Unique(["telephone"])
     @Column()
     telephone: number;
 

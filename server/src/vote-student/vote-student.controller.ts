@@ -30,5 +30,4 @@ export class VoteStudentController {
 
     return this.voteStudentService.findOne( voteId, studentId);
   }
-
 }
