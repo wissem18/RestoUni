@@ -29,11 +29,8 @@ private readonly VoteService: VoteService,
     ) { }
 
 
-  create(voteId:string,studentId:string,optionId:string,restaurantID : string): Promise<VoteStudent> {
-    return this.RestaurantService.findOne(restaurantID).then((restaurant) => {
-        if(!restaurant) {
-            throw new NotFoundException("Restaruant not found");
-        }
+  create(voteId:string,studentId:string,optionId:string): Promise<VoteStudent> {
+   
     return this.StudentService.findOne(studentId).then((student) => {
         if(!student) {
             throw new NotFoundException("Student not found");
@@ -66,9 +63,9 @@ private readonly VoteService: VoteService,
 
         });
     });
-  });
-    });
+});
 }
+
 
   findOne(voteID : string , studentID : string) {
     return this.VoteService.findOne(voteID).then((vote) => {

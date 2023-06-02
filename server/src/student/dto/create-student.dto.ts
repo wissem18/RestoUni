@@ -17,11 +17,15 @@ export class CreateStudentDto {
     @IsNotEmpty({ message: validatorsErrorMessages.REQUIRED })
     password: string;
 
+<<<<<<< HEAD
+    @IsNotEmpty()
+=======
     @Min(2000000, { message: `${validatorsErrorMessages.MIN_LENGTH_Student}` })
     @Max(5000000, { message: `${validatorsErrorMessages.MAX_LENGTH_student}` })
     @Type(() => Number)
     @IsNumber()
     @IsNotEmpty({ message: validatorsErrorMessages.REQUIRED })
+>>>>>>> be812eb7f5be419fe59ce0ed3d0bf17311f15fcb
     cardID:number; 
 
     @IsString()

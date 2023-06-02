@@ -1,4 +1,3 @@
-
 /* eslint-disable prettier/prettier */
 import {IsNotEmpty} from "class-validator";
 import validatorsErrorMessages from "src/validator-error-messagets";

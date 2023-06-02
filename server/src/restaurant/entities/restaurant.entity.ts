@@ -8,7 +8,7 @@ import { Student } from "src/student/entities/student.entity";
 import { Menu } from "src/menu/entities/menu.entity";
 import { Vote } from "src/vote/entities/vote.entity";
 
-@Entity("Restaurants")
+@Entity()
 export class Restaurant extends TimeStampEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;

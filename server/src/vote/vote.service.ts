@@ -6,6 +6,7 @@ import {Equal, Repository} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vote } from './entities/vote.entity';
 import {Restaurant} from "../restaurant/entities/restaurant.entity";
+import {Option} from 'src/option/entities/option.entity';
 
 @Injectable()
 export class VoteService {
@@ -15,11 +16,12 @@ export class VoteService {
 
     @InjectRepository(Restaurant)
     private readonly restaurantRepository: Repository<Restaurant>,
+    @InjectRepository(Option)
+    private readonly optionRepository: Repository<Option>,
 
   ) { }
 
   async create(restaurantId:string, VoteDto: CreateVoteDto): Promise<Vote> {
-    // check if the restaurant exists
 
     const restaurant = await this.restaurantRepository.findOne({where : {id  : Equal(restaurantId)}});
 
@@ -27,13 +29,28 @@ export class VoteService {
         throw new NotFoundException("Restaurant not found");
       }
      
-      const vote = this.voteRepository.create(VoteDto);
-      vote.restaurant = restaurant;
-      return this.voteRepository.save(vote);
+      const { name, description} = VoteDto;
+      console.log(name);
+      console.log(description);
+      const vote = new Vote();
+      vote.name = name;
+      vote.description = description;
+      vote.restaurant=restaurant;
+  
+      const createdVote = await this.voteRepository.save(vote);
+      return createdVote;
   }
 
-  async findAll(): Promise<Vote[]> {
+  async findAll(restaurantId:string): Promise<Vote[]> {
+    const restaurant = await this.restaurantRepository.findOne({where : {id  : Equal(restaurantId)}});
+
+    if(!restaurant) { 
+      throw new NotFoundException("Restaurant not found");
+    }
     return await this.voteRepository.find({
+    where:{
+      restaurant :{id:restaurantId}
+    },
       relations : {
         Options: true,
         voteStudents:true

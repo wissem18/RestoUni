@@ -1,1 +1,4 @@
-export class CreateVoteStudentDto {}
+/* eslint-disable prettier/prettier */
+export class CreateVoteStudentDto {
+    
+}

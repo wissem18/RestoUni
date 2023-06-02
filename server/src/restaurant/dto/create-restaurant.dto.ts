@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
-import {IsString, IsNumber, IsNotEmpty, MaxLength, MinLength, Min, Max} from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsNumber, IsNotEmpty, Min, Max } from 'class-validator';
 import validatorsErrorMessages from 'src/validator-error-messagets';
-import {ParseIntPipe} from "@nestjs/common";
-import {Type} from "class-transformer";
 
 
 export class CreateRestaurantDto {

@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { MenuList } from "../data/data";
 import Layout from "./../components/Layout";
 import MenuForm from "../components/MenuForm";
@@ -16,6 +17,7 @@ const Menu = (props) => {
   const { myResto, setMyResto } = useResto();
   const { myUser, setMyUser } = useUser();
   const [showMenuform, setShowMenuform] = React.useState(false);
+  const [Menus, setMenus] = React.useState([]);
   const handleMenu = () => {
     setShowMenuform(true);
   };
@@ -23,6 +25,19 @@ const Menu = (props) => {
   const handleMenuFormClose = () => {
     setShowMenuform(false);
   };
+
+  React.useEffect(() => {
+    const fetchMenus = async () => {
+      try {
+         const  response = await axios.get('http://localhost:3006/restaurant/e94caa58-d4af-4ac6-8779-253d426f7870');
+        setMenus(response.data.Menus);
+      } catch (error) {
+        console.error('Error fetching menus:', error);
+      }
+    };
+
+    fetchMenus();
+  }, []);
 
   return (
     <Layout >
@@ -33,7 +48,7 @@ const Menu = (props) => {
           justifyContent: "center",
         }}
       >
-        {MenuList.map((menu) => (
+        {Menus.map((menu) => (
           <Card sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
             <CardActionArea>
               <CardContent>
@@ -41,7 +56,7 @@ const Menu = (props) => {
                   <div className="content">
                     <div className="back">
                       <div className="back-content">
-                        <strong>Monday</strong>
+                        <strong>{menu.date}</strong>
                       </div>
                     </div>
                     <div className="front">
@@ -51,11 +66,21 @@ const Menu = (props) => {
                         <div className="circle" id="bottom"></div>
                       </div>
                       <div className="front-content">
-                        <small className="badge">Pasta</small>
                         <div className="description">
                           <div className="title">
                             <p className="title">
-                              <strong>Spaguetti Bolognese</strong>
+                              <strong>Plat: {menu.plat}</strong>
+                            </p>
+                          </div>
+                          <div className="title">
+                            <p className="title">
+                              <strong>Entrée: {menu.entrée}</strong>
+                            </p>
+                          </div>
+                          
+                          <div className="title">
+                            <p className="title">
+                              <strong>Dessert: {menu.dessert}</strong>
                             </p>
                           </div>
                           <p className="card-footer">
@@ -79,7 +104,7 @@ const Menu = (props) => {
               justifyContent: "center",
             }}
           >
-            {MenuList.map((menu) => (
+            {Menus.map((menu) => (
               <Card sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
                 <CardActionArea>
                   <CardContent>
@@ -87,7 +112,7 @@ const Menu = (props) => {
                       <div className="content">
                         <div className="back">
                           <div className="back-content">
-                            <strong>Monday</strong>
+                            <strong>{menu.date}</strong>
                           </div>
                         </div>
                         <div className="front">
@@ -97,14 +122,23 @@ const Menu = (props) => {
                             <div className="circle" id="bottom"></div>
                           </div>
                           <div className="front-content">
-                            <small className="badge">Pasta</small>
-                            <div className="description">
+                              <div className="description">
                               <div className="title">
                                 <p className="title">
-                                  <strong>Spaguetti Bolognese</strong>
+                                  <strong>Plat: {menu.plat}</strong>
                                 </p>
 
 
+                              </div>
+                              <div className="title">
+                                <p className="title">
+                                  <strong>Entrée: {menu.entrée}</strong>
+                                </p>
+                              </div>
+                              <div className="title">
+                                <p className="title">
+                                  <strong>Dessert: {menu.dessert}</strong>
+                                </p>
                               </div>
                               <p className="card-footer">
                                 11:30 &nbsp; | &nbsp; 13:30

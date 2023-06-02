@@ -29,14 +29,13 @@ export class VoteController {
   @UseGuards(RestauAuthGuard)
 
   create(@Body() createVoteDto: CreateVoteDto,@Param("restaurantId") restaurantId: string) {
+    console.log(createVoteDto);
     return this.voteService.create(restaurantId,createVoteDto);
   }
 
-  @Get()
-  @UseGuards(RestauAuthGuard||AuthGuard)
-
-  findAll() {
-    return this.voteService.findAll();
+  @Get(':restaurantId')
+  findAll(@Param('restaurantId') restaurantId: string) {
+    return this.voteService.findAll(restaurantId);
   }
 
   @Get(':id')

@@ -46,16 +46,16 @@ export class RestaurantService {
         });
   }
 
-  async findAll(): Promise<Restaurant[]> {
-    return await this.RestaurantRepository.find({
-      relations: {
-        Menus: true,
-        Students: true,
-        Votes: true
-      }
-    },
-    );
-  }
+    async findAll(): Promise<Restaurant[]> {
+        return await this.RestaurantRepository.find({
+                relations : {
+                    Menus: true,
+                    Students:true,  
+                    Votes:true
+                }
+            },
+        );
+    }
 
   findOne(id: string): Promise<Restaurant> {
     return this.RestaurantRepository.findOne({
