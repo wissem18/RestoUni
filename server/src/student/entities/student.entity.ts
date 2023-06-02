@@ -4,7 +4,7 @@ import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
 import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
 import { VoteStudent } from 'src/vote-student/entities/vote-student.entity';
 import { Vote } from 'src/vote/entities/vote.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, OneToMany, Unique } from 'typeorm';
 import {v4 as uuid} from 'uuid';
 @Entity()
 export class Student extends TimeStampEntity{
@@ -16,10 +16,12 @@ export class Student extends TimeStampEntity{
 
   @Column({ length: 50 })
   lastname: string;
-   
+  
+  @Unique(["cardID"])
   @Column()
   cardID: number 
 
+  @Unique(["email"])
   @Column({ length: 50 })
   email: string;
   

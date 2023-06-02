@@ -29,5 +29,4 @@ export class VoteStudentController {
   findOne(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string) {
     return this.voteStudentService.findOne( voteId, studentId);
   }
-
 }

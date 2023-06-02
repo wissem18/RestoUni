@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Entity, Column, ManyToOne, PrimaryColumn, JoinColumn } from 'typeorm';
 import { Vote } from '../../vote/entities/vote.entity';
 import { Student } from "../../student/entities/student.entity";

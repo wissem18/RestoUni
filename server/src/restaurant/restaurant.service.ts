@@ -69,6 +69,13 @@ export class RestaurantService {
     }
     return this.RestaurantRepository.delete(id);
   }
+  softRemove(id: string) {
+    const restaurant = this.RestaurantRepository.findOne({ where: { id: id } });
+    if (!restaurant) {
+      throw new NotFoundException("Restaurant not found");
+    }
+    return this.RestaurantRepository.softDelete(id);
+  }
   findByName(name: string): Promise<Restaurant> {
     return this.RestaurantRepository.findOne({
       where: {
