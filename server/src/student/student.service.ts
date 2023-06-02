@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Equal, Repository } from 'typeorm';
@@ -29,7 +29,26 @@ export class StudentService {
     student.salt = await bcrypt.genSalt();
     student.password = await bcrypt.hash(student.password, student.salt);
     student.restaurant = restaurant;
-    return this.StudentRepository.save(student);
+    try{
+      await this.StudentRepository.save(student);
+  }catch(e){
+      throw new ConflictException("Mail adress or Card already exists !");
+  }
+
+  const returnedStudent = {
+    id : student.id,
+    firstname : student.firstname,
+    lastname : student.lastname,
+    email : student.email,
+    cardID : student.cardID,
+    restaurant : student.restaurant
+
+  }
+
+  return({
+        token: await this.jwtService.signAsync(returnedStudent)
+    });
+
   }
 
 

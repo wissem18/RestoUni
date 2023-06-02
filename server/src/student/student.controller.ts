@@ -12,13 +12,13 @@ export class StudentController {
 
   @Post('login')
   login(@Body() loginCredentialsDto: LoginCredentialsDto) {
-    return this.studentService.login(loginCredentialsDto);
-  }
+      return this.studentService.login(loginCredentialsDto);
+} 
+
   @Post(":restaurantId")
   create(@Param('restaurantId') restaurantId: string, @Body() createStudentDto: CreateStudentDto) {
     return this.studentService.create(restaurantId, createStudentDto);
   }
-
 
 
   @Get()
