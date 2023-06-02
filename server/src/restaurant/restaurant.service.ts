@@ -3,15 +3,13 @@
 import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-
-
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {Restaurant} from "./entities/restaurant.entity";
 import {Menu} from "../menu/entities/menu.entity";
 import {Vote} from "../vote/entities/vote.entity";
 import * as bcrypt from 'bcrypt';
-import {JwtService} from "@nestjs/jwt";
+import { JwtService } from '@nestjs/jwt';
 import { RestauLoginCredentialsDto } from './dto/restaulogin-credentials.dto';
 
 
@@ -78,14 +76,21 @@ export class RestaurantService {
 
   }
 
-  update(id: string, updateRestaurantDto: UpdateRestaurantDto) {
+  async update(id: string, updateRestaurantDto: UpdateRestaurantDto) {
     //chek if the restaurant exists
     const restaurant = this.RestaurantRepository.findOne({ where: { id: id } });
     if (!restaurant) {
       throw new NotFoundException("Restaurant not found");
     }
-
-    return this.RestaurantRepository.update(id, updateRestaurantDto);
+    const newResto = await this.RestaurantRepository.update(id, updateRestaurantDto)
+    const payload = {
+      id: newResto["id"],
+      name: newResto["name"],
+      identifiant: newResto["identifiant"],
+      localisation: newResto["localisation"],
+      telephone: newResto["telephone"]
+    }
+    return { token: await this.jwtService.signAsync(payload)};
   }
 
   remove(id: string) {

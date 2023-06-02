@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Layout from "../components/Layout";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from 'axios';
-
+import JwtToken from "../JwtToken";
 import "../styles/Login.css";
 
 function Signup(props) {
-    const navigate = useNavigate();
     const [check, setCheck] = useState(true);
     const [firstname, setFirstName] = useState(null);
     const [lastname, setLastName] = useState(null);
@@ -59,9 +58,10 @@ function Signup(props) {
         } else {
             try {
                 await axios.get(`http://localhost:3006/restaurant/find/${RestaurantName}`).then(async (response) => {
-                    if (response.status === 404 || !response.data)
+                    if (response.status === 401 || !response.data)
                         setError("Restaurant name wrong")
                     else {
+
                         await axios.post(`http://localhost:3006/student/${response.data.id}`, {
                             "firstname": firstname,
                             "lastname": lastname,
@@ -72,8 +72,14 @@ function Signup(props) {
                             headers: {
                                 'Content-Type': 'application/json',
                             },
+                        }).then((response) => {
+                            const token = response.data.token;
+                            localStorage.setItem("token", token);
+                            JwtToken(token);
+                        }).catch((error) => {
+                            setError(error.response.data.message);
                         });
-                        window.location.href='http://localhost:3000/login';
+                        window.location.href = 'http://localhost:3000/login';
                     }
                 });
 
@@ -86,10 +92,13 @@ function Signup(props) {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = await axios.get('http://localhost:3006/Restaurant');
-                setItems(response.data);
+                await axios.get('http://localhost:3006/Restaurant',).then((response) => {
+                    setItems(response.data);
+                });
+
+
             } catch (error) {
-                console.error(error);
+                setError(error.response.data.message);
             }
         };
 
@@ -137,10 +146,15 @@ function Signup(props) {
                     "identifiant": Identity,
                     "telephone": phone,
                     "localisation": Location,
-                }, { headers: { 'Content-Type': 'application/json', }, });
+                }, { headers: { 'Content-Type': 'application/json', }, }).then((response) => {
+                    const token = response.data.token;
+                    localStorage.setItem("token", token);
+                    JwtToken(token);
+                }).catch((error) => {
+                    setError(error.response.data.message);
+                });
                 window.location.href = 'http://localhost:3000/login';
             } catch (error) {
-                console.error(error);
                 setError(error.response.data.message);
             }
         }
@@ -221,7 +235,7 @@ function Signup(props) {
                 ) : (
                     <>
                         <p className="title">Restaurant SignUp</p>
-                            <form className="form" onSubmit={(e) => signupRestaurantService(e)}>
+                        <form className="form" onSubmit={(e) => signupRestaurantService(e)}>
                             <div className="input-group">
                                 <label htmlFor="Name">Name</label>
                                 <input type="text" name="Name" id="Name" placeholder="" onChange={(e) => NameHandler(e.target.value)} />
