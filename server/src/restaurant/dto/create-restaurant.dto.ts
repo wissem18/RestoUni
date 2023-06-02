@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
 
@@ -17,7 +18,7 @@ export class CreateRestaurantDto {
     @IsNotEmpty()
     password: string;
 
-@IsNotEmpty()
+    @IsNotEmpty()
     telephone: number;
 
     @IsString()
