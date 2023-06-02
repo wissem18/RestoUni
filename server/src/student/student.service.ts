@@ -51,16 +51,9 @@ export class StudentService {
     );
   }
 
-  async findOne(id: string, restaurantId: string) {
-    const restaurant = await this.RestaurantRepository.findOne({where : {id  : Equal(restaurantId)}});
-    if(!restaurant) {
-      throw new NotFoundException("Restaurant not found");
-    }
+  async findOne(id: string) {
     return await this.StudentRepository.findOne({
-          where : {restaurant : {id : restaurantId } , id : id },
-          relations : {
-            voteStudents:true
-          }
+          where : {id : id }  
         }).then(Student => {
             if(!Student){
                 throw new NotFoundException("Student not found");
@@ -71,9 +64,9 @@ export class StudentService {
   }
 
 
-   async  update(restaurantid : string ,  id: string, updateStudentDto: UpdateStudentDto) {
+   async  update(id: string, updateStudentDto: UpdateStudentDto) {
 
-      const student = await this.findOne(id, restaurantid );
+      const student = await this.findOne(id);
     if(!student) {
       throw new NotFoundException("Student not found");
     }
@@ -81,12 +74,24 @@ export class StudentService {
     }
 
 
-  async  remove(restaurantid : string ,  id: string) {
+  async  remove(id: string) {
 
-    const student = await this.findOne(id,restaurantid );
+    const student = await this.findOne(id);
     if(!student) {
       throw new NotFoundException("Student not found");
     }
     return this.StudentRepository.delete(student.id);
+  }
+  async findOneByIdentifier(identifier: string) {
+    const identifiant = parseInt(identifier);
+    return await this.StudentRepository.findOne({
+      where: { cardID: identifiant }  
+        }).then(Student => {
+            if(!Student){
+                throw new NotFoundException("Student not found");
+            }
+            return Student;
+        }
+    );
   }
 }

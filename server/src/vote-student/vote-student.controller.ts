@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -20,13 +21,13 @@ export class VoteStudentController {
 
   @Post(':restaurantId/:studentId/:voteId')
   create(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string,
-         @Body() optionId: string) {
-    return this.voteStudentService.create(voteId,  studentId, optionId, restaurantId);
+         @Body('optionId') optionId: string) {
+    return this.voteStudentService.create(voteId,  studentId, optionId);
   }
 
   @Get(':restaurantId/:studentId/:voteId')
   findOne(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string) {
-    return this.voteStudentService.findOne( voteId, studentId,restaurantId);
+    return this.voteStudentService.findOne( voteId, studentId);
   }
 
 }
