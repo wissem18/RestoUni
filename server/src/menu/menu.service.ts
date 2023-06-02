@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {Inject, Injectable, NotFoundException} from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
@@ -66,6 +67,15 @@ export class MenuService {
     }
     return this.MenuRepository.delete(menu.id);
   }
+  async softDelete(restaurantid : string ,  id: string) {
+      
+      const menu = await this.findOne(id);
+
+      if(!menu) {
+        throw new NotFoundException("Menu not found");
+      }
+      return this.MenuRepository.softDelete(menu.id);
+    }
 }
 
 

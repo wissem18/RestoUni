@@ -15,11 +15,15 @@ import { NavLink } from "react-router-dom";
 import "../styles/HeaderStyles.css";
 const Header = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  // hndle menu click
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  //menu drawer
+  const LogOut = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("user");
+    localStorage.removeItem("restaurant");
+    window.location.href = 'http://localhost:3000/login';
+  }
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography
@@ -102,7 +106,7 @@ const Header = (props) => {
                 </li>
                 {props.isConnected ? (<li>
                   <NavLink to={"/settings"}>settings</NavLink>
-                </li>):<></>}
+                </li>) : <></>}
                 <li>
                   {!props.isConnected ? (<NavLink to={"/login"}>
                     <button className="box-button">
@@ -110,13 +114,13 @@ const Header = (props) => {
                         Log In
                       </span>
                     </button></NavLink>) : <NavLink to={"/"}>
-                    <button className="box-button">
+                      <button className="box-button" onClick={(e) => LogOut(e)}>
                       <span className="box">
                         Log Out
                       </span>
                     </button></NavLink>}
 
-                 
+
                 </li>
 
               </ul>

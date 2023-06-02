@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 import {Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
@@ -8,8 +9,10 @@ import {VoteService} from "../vote/vote.service";
 import {OptionService} from "../option/option.service";
 import { RestaurantService } from 'src/restaurant/restaurant.service';
 
+
 @Injectable()
 export class VoteStudentService {
+
 
   constructor(
       @InjectRepository(VoteStudent)
@@ -21,8 +24,10 @@ export class VoteStudentService {
   @Inject(VoteService)
 private readonly VoteService: VoteService,
       @Inject(OptionService)
+
         private readonly OptionService: OptionService
-) {}
+    ) { }
+
 
   create(voteId:string,studentId:string,optionId:string): Promise<VoteStudent> {
    
@@ -37,15 +42,28 @@ private readonly VoteService: VoteService,
             return this.OptionService.findOne(optionId).then((option) => {
             if(!option) {
                 throw new NotFoundException("Option not found");
+
             }
-            const voteStudent = new VoteStudent();
-            voteStudent.student = student;
-            voteStudent.vote = vote;
-            voteStudent.option = option.id;
-            return this.VoteStudentRepository.save(voteStudent);
+            console.log(student);
+            return this.VoteService.findOne(voteId).then((vote) => {
+                if (!vote) {
+                    throw new NotFoundException("Vote not found");
+                }
+                return this.OptionService.findOne(optionId).then((option) => {
+                    if (!option) {
+                        throw new NotFoundException("Option not found");
+                    }
+                    const voteStudent = new VoteStudent();
+                    voteStudent.student = student;
+                    voteStudent.vote = vote;
+                    voteStudent.option = option.id;
+                    return this.VoteStudentRepository.save(voteStudent);
+                });
             });
+
         });
     });
+});
 }
 
 
@@ -57,20 +75,26 @@ private readonly VoteService: VoteService,
         return this.StudentService.findOne(studentID ).then((student) => {
             if(!student) {
                 throw new NotFoundException("Student not found");
+
             }
-            return this.VoteStudentRepository.findOne({
-                where: {
-                    vote: {
-                        id: voteID
-                    },
-                    student: {
-                        id: studentID
-                    }
+            return this.StudentService.findOne(studentID).then((student) => {
+                if (!student) {
+                    throw new NotFoundException("Student not found");
                 }
+                return this.VoteStudentRepository.findOne({
+                    where: {
+                        vote: {
+                            id: voteID
+                        },
+                        student: {
+                            id: studentID
+                        }
+                    }
+                });
             });
-        });
-    }
-);
+        }
+        );
     }
 
+  );}
 }

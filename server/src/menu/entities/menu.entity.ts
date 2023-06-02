@@ -1,9 +1,14 @@
 /* eslint-disable prettier/prettier */
+<<<<<<< HEAD
 import {Column, CreateDateColumn, DeleteDateColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Entity, PrimaryColumn} from "typeorm";
+=======
+import {Column
+    , ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, } from "typeorm";
+>>>>>>> be812eb7f5be419fe59ce0ed3d0bf17311f15fcb
 import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
 import {Restaurant} from "../../restaurant/entities/restaurant.entity";
-import {v4 as uuid} from "uuid";
 @Entity('menu')
 export class Menu extends TimeStampEntity {
     @PrimaryGeneratedColumn("uuid")
