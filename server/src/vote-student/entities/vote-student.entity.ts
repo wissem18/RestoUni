@@ -3,6 +3,7 @@ import { Entity, Column, ManyToOne, PrimaryColumn, JoinColumn } from 'typeorm';
 import { Vote } from '../../vote/entities/vote.entity';
 import { Student } from "../../student/entities/student.entity";
 import {PrimaryGeneratedColumn} from "typeorm";
+import { IsString } from 'class-validator';
 
 @Entity()
 export class VoteStudent {
@@ -15,6 +16,6 @@ export class VoteStudent {
     @ManyToOne(() => Student, (student) => student.voteStudents, { onDelete: 'CASCADE' })
     student: Student;
 
-    @Column({ length: 50 })
+    @Column()
     option: string;
 }

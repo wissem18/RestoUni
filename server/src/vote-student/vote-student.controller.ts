@@ -21,20 +21,10 @@ import { RestauAuthGuard } from 'src/restaurant/Guards/restau.auth.guard';
 export class VoteStudentController {
   constructor(private readonly voteStudentService: VoteStudentService) {}
 
-<<<<<<< HEAD
   @Post(':studentId/:voteId')
   create( @Param('studentId') studentId: string, @Param('voteId') voteId: string,
          @Body("optionId")optionId:string) {
     return this.voteStudentService.create(voteId,  studentId, optionId);
-=======
-  @Post(':restaurantId/:studentId/:voteId')
-  @UseGuards(AuthGuard)
-
-  create(@Param('restaurantId') restaurantId: string, @Param('studentId') studentId: string, @Param('voteId') voteId: string,
-
-         @Body("optionId") optionId: string) {
-    return this.voteStudentService.create(voteId,  studentId, optionId, restaurantId);
->>>>>>> be812eb7f5be419fe59ce0ed3d0bf17311f15fcb
   }
 
   @Get('studentId/:voteId')
@@ -43,5 +33,10 @@ export class VoteStudentController {
   findOne( @Param('studentId') studentId: string, @Param('voteId') voteId: string) {
 
     return this.voteStudentService.findOne( voteId, studentId);
+  }
+  @Get('stat/:votedId/:optionId')
+  @UseGuards(RestauAuthGuard)
+  getStat(@Param('votedId') votedId: string, @Param('optionId') optionId: string){
+    return this.voteStudentService.getStat(votedId,optionId);
   }
 }

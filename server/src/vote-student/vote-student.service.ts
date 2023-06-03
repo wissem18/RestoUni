@@ -64,6 +64,7 @@ private readonly VoteService: VoteService,
         });
     });
 });
+
 }
 
 
@@ -96,5 +97,10 @@ private readonly VoteService: VoteService,
         );
     }
 
-  );}
+);}
+    async getStat(votedId, optionId) {
+        const result = await this.VoteStudentRepository.query(`SELECT COUNT(id) as count FROM vote_student WHERE voteId = "${votedId}" AND option = "${optionId}"`);
+        return result[0].count.toString();
+    }
+
 }

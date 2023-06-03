@@ -136,8 +136,6 @@ function Signup(props) {
             setError("phone must be 8 numbers");
         } else if (!identityRegex.test(Identity)) {
             setError("Identity not found");
-        } else if (!stringRegex.test(Location)) {
-            setError("Location is wrong");
         } else {
             try {
                 await axios.post(`http://localhost:3006/restaurant`, {

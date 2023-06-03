@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
+import useResto from "../context/RestoContext";
 function VoteForm(props) {
+  const { myResto, setMyResto } = useResto();
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [options, setOptions] = React.useState(['']);
@@ -24,10 +26,10 @@ function VoteForm(props) {
                 'name': name,
                 'description': description,
               };
-
-            const response = await axios.post('http://localhost:3006/vote/eeb2ec84-d8fe-4505-9184-39c6e91ff092',formData,{headers:{'Content-Type':'application/json' },});
+            
+            const response = await axios.post(`http://localhost:3006/vote/${myResto.id}`,
+            formData,{headers:{'Content-Type':'application/json' },});
             const id=await response.data.id;
-            console.log(id);
             for (const option of options) {
             await axios.post(
               `http://localhost:3006/option/${id}`,
@@ -38,11 +40,12 @@ function VoteForm(props) {
               }
             );
           }
-          console.log(response.data);
+          props.fetchVotes()
         } catch (error) {
           console.error(error);
         }
       };
+ 
   return (
       <form className="form-Menu">
           <label className="lb" for="Name">Name</label>

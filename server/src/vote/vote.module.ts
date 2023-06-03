@@ -8,23 +8,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {RestaurantService} from "../restaurant/restaurant.service";
 import {Restaurant} from "../restaurant/entities/restaurant.entity";
-<<<<<<< HEAD
-import {RestaurantModule} from "../restaurant/restaurant.module";
-import {Option} from 'src/option/entities/option.entity';
+import { Option } from 'src/option/entities/option.entity';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([Vote,Restaurant,Option]),
-      RestaurantModule,
-
-=======
-
-@Module({
-  imports: [
-    TypeOrmModule.forFeature([Vote,Restaurant]),
->>>>>>> be812eb7f5be419fe59ce0ed3d0bf17311f15fcb
   ],
   controllers: [VoteController],
-  providers: [VoteService,RestaurantService,RestaurantService],
+  providers: [VoteService,RestaurantService],
   exports: [VoteService,TypeOrmModule]
 
 })

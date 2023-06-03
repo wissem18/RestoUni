@@ -2,13 +2,14 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { Equal, Repository } from 'typeorm';
+import { Equal, QueryBuilder, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
-import {Restaurant} from "../restaurant/entities/restaurant.entity";
+import { Restaurant } from "../restaurant/entities/restaurant.entity";
 import * as bcrypt from 'bcrypt';
-import {LoginCredentialsDto} from "./dto/login-credentials.dto";
-import {JwtService} from "@nestjs/jwt";
+import { LoginCredentialsDto } from "./dto/login-credentials.dto";
+import { JwtService } from "@nestjs/jwt";
+import { query } from 'express';
 
 
 @Injectable()
@@ -19,34 +20,34 @@ export class StudentService {
     @InjectRepository(Restaurant)
     private readonly RestaurantRepository: Repository<Restaurant>,
     private jwtService: JwtService
-  ) {}
-  async create(restaurantId: string ,  createStudentDto: CreateStudentDto) {
-    const restaurant = await this.RestaurantRepository.findOne({where : {id  : Equal(restaurantId)}});
-    if(!restaurant) {
+  ) { }
+  async create(restaurantId: string, createStudentDto: CreateStudentDto) {
+    const restaurant = await this.RestaurantRepository.findOne({ where: { id: Equal(restaurantId) } });
+    if (!restaurant) {
       throw new NotFoundException("Restaurant not found");
     }
     const student = this.StudentRepository.create(createStudentDto);
     student.salt = await bcrypt.genSalt();
     student.password = await bcrypt.hash(student.password, student.salt);
     student.restaurant = restaurant;
-    try{
+    try {
       await this.StudentRepository.save(student);
-  }catch(e){
+    } catch (e) {
       throw new ConflictException("Mail adress or Card already exists !");
-  }
+    }
 
-  const returnedStudent = {
-    id : student.id,
-    firstname : student.firstname,
-    lastname : student.lastname,
-    email : student.email,
-    cardID : student.cardID,
-    restaurant : student.restaurant
+    const returnedStudent = {
+      id: student.id,
+      firstname: student.firstname,
+      lastname: student.lastname,
+      email: student.email,
+      cardID: student.cardID,
+      restaurant: student.restaurant
 
-  }
+    }
 
-  return({
-        token: await this.jwtService.signAsync(returnedStudent)
+    return ({
+      token: await this.jwtService.signAsync(returnedStudent)
     });
 
   }
@@ -55,8 +56,8 @@ export class StudentService {
 
   async findAll() {
     return this.StudentRepository.find({
-      relations : {
-        voteStudents:true
+      relations: {
+        voteStudents: true
       }
     },
     );
@@ -65,46 +66,51 @@ export class StudentService {
   async findOne(id: string) {
     return await this.StudentRepository.findOne({
 
-          where : { id : id },
-          relations : {
-            voteStudents:true
-          }
-        }).then(Student => {
-            if(!Student){
-                throw new NotFoundException("Student not found");
-            }
-            return Student;
-        }
+      where: { id: id },
+      relations: {
+        voteStudents: true,
+      }
+    }).then(Student => {
+      if (!Student) {
+        throw new NotFoundException("Student not found");
+      }
+      return Student;
+    }
     );
+  }
+  async findResto(id: string) {
+    console.log(id);
+    return await this.StudentRepository.query(`SELECT restaurantId FROM student WHERE id = "${id}"`);
   }
 
 
 
-   async  update(  id: string, updateStudentDto: UpdateStudentDto) {
+  async update(id: string, updateStudentDto: UpdateStudentDto) {
 
-      const student = await this.findOne(id );
+    const student = await this.findOne(id);
 
-    if(!student) {
+    if (!student) {
       throw new NotFoundException("Student not found");
     }
-     const newUser = await this.StudentRepository.update(student.id, updateStudentDto);
-     const payload = {
-       id: newUser["id"],
-       firstname: newUser["firstname"],
-       lastname: newUser["lastname"],
-       email: newUser["email"],
-       cardID: newUser["carID"],
-     }
-     return { token: await this.jwtService.signAsync(payload)} ;
+    const newUser = await this.StudentRepository.update(student.id, updateStudentDto);
+    const payload = {
+      id: newUser["id"],
+      firstname: newUser["firstname"],
+      lastname: newUser["lastname"],
+      email: newUser["email"],
+      cardID: newUser["carID"],
+
     }
+    return { token: await this.jwtService.signAsync(payload) };
+  }
 
 
 
-  async  remove(  id: string) {
+  async remove(id: string) {
 
-    const student = await this.findOne(id );
+    const student = await this.findOne(id);
 
-    if(!student) {
+    if (!student) {
       throw new NotFoundException("Student not found");
     }
     return this.StudentRepository.delete(student.id);
@@ -112,39 +118,39 @@ export class StudentService {
 
 
 
-    async login(userData : LoginCredentialsDto){
-        const user = {
-            cardID : userData.cardID,
-            password : userData.password
-        }
-        const userFound = await this.StudentRepository.createQueryBuilder("user").
-        where("user.cardId = :cardId", {
-            cardId : user.cardID
-        }).getOne();
-        if( !userFound ){
-            throw new NotFoundException("CardId or Password Incorrect !");
-        }
-        const hashedPassword = await bcrypt.hash(user.password , userFound.salt);
-        if(hashedPassword == userFound.password) {
-
-            const payload = {
-                id : userFound.id,
-                firstname : userFound.firstname,
-                lastname : userFound.lastname,
-                email : userFound.email,
-                cardID : userFound.cardID,
-            }
-            return({
-                token: await this.jwtService.signAsync(payload)
-            })
-        }else {
-            throw new NotFoundException("Email or Password Incorrect !");
-        }
+  async login(userData: LoginCredentialsDto) {
+    const user = {
+      cardID: userData.cardID,
+      password: userData.password
     }
+    const userFound = await this.StudentRepository.createQueryBuilder("user").
+      where("user.cardId = :cardId", {
+        cardId: user.cardID
+      }).getOne();
+    if (!userFound) {
+      throw new NotFoundException("CardId or Password Incorrect !");
+    }
+    const hashedPassword = await bcrypt.hash(user.password, userFound.salt);
+    if (hashedPassword == userFound.password) {
+
+      const payload = {
+        id: userFound.id,
+        firstname: userFound.firstname,
+        lastname: userFound.lastname,
+        email: userFound.email,
+        cardID: userFound.cardID,
+      }
+      return ({
+        token: await this.jwtService.signAsync(payload)
+      })
+    } else {
+      throw new NotFoundException("Email or Password Incorrect !");
+    }
+  }
 
   async softRemove(id: string) {
     const student = await this.findOne(id);
-    if(!student) {
+    if (!student) {
       throw new NotFoundException("Student not found");
     }
     return this.StudentRepository.softDelete(student.id);
@@ -152,13 +158,13 @@ export class StudentService {
   async findOneByIdentifier(identifier: string) {
     const identifiant = parseInt(identifier);
     return await this.StudentRepository.findOne({
-      where: { cardID: identifiant }  
-        }).then(Student => {
-            if(!Student){
-                throw new NotFoundException("Student not found");
-            }
-            return Student;
-        }
+      where: { cardID: identifiant }
+    }).then(Student => {
+      if (!Student) {
+        throw new NotFoundException("Student not found");
+      }
+      return Student;
+    }
     );
   }
 
