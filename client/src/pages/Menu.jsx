@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { MenuList } from "../data/data";
 import Layout from "./../components/Layout";
@@ -13,7 +13,7 @@ import {
   CardContent,
 } from "@mui/material";
 
-const Menu = (props) => {
+const Menu = () => {
   const { myResto, setMyResto } = useResto();
   const { myUser, setMyUser } = useUser();
   const [showMenuform, setShowMenuform] = React.useState(false);
@@ -25,19 +25,33 @@ const Menu = (props) => {
   const handleMenuFormClose = () => {
     setShowMenuform(false);
   };
-
-  React.useEffect(() => {
-    const fetchMenus = async () => {
-      try {
-         const  response = await axios.get('http://localhost:3006/restaurant/e94caa58-d4af-4ac6-8779-253d426f7870');
-        setMenus(response.data.Menus);
-      } catch (error) {
-        console.error('Error fetching menus:', error);
+  let fetchMenus = async () => {
+    try {
+      if (myUser) {
+        await axios.get(`http://localhost:3006/student/Resto/${myUser.id}`).then(async (response) => {
+          console.log(response.data);
+          const resp = await axios.get(`http://localhost:3006/restaurant/${response.data[0].restaurantId}`);
+          setMenus(resp.data.Menus);
+        })
       }
-    };
-
-    fetchMenus();
+      else if (myResto) {
+        const response = await axios.get(`http://localhost:3006/restaurant/${myResto.id}`);
+        setMenus(response.data.Menus);
+      }
+    } catch (error) {
+      console.error('Error fetching menus:', error);
+    }
+  };
+  React.useEffect(() => {
+    fetchMenus()
   }, []);
+
+
+  const DeleteMenu = async (e, id) => {
+    e.preventDefault();
+    await axios.delete(`http://localhost:3006/menu/${id}`)
+    fetchMenus();
+  }
 
   return (
     <Layout >
@@ -69,18 +83,18 @@ const Menu = (props) => {
                         <div className="description">
                           <div className="title">
                             <p className="title">
-                              <strong>Plat: {menu.plat}</strong>
+                              <strong>{menu.plat}</strong>
                             </p>
                           </div>
                           <div className="title">
                             <p className="title">
-                              <strong>Entrée: {menu.entrée}</strong>
+                              <strong>{menu.entrée}</strong>
                             </p>
                           </div>
-                          
+
                           <div className="title">
                             <p className="title">
-                              <strong>Dessert: {menu.dessert}</strong>
+                              <strong>{menu.dessert}</strong>
                             </p>
                           </div>
                           <p className="card-footer">
@@ -95,7 +109,7 @@ const Menu = (props) => {
             </CardActionArea>
           </Card>
         ))}
-      </Box>):(
+      </Box>) : (
         <>
           <Box
             sx={{
@@ -122,27 +136,28 @@ const Menu = (props) => {
                             <div className="circle" id="bottom"></div>
                           </div>
                           <div className="front-content">
-                              <div className="description">
+                            <div className="description">
                               <div className="title">
                                 <p className="title">
-                                  <strong>Plat: {menu.plat}</strong>
+                                  <strong> {menu.plat}</strong>
                                 </p>
 
 
                               </div>
                               <div className="title">
                                 <p className="title">
-                                  <strong>Entrée: {menu.entrée}</strong>
+                                  <strong> {menu.entrée}</strong>
                                 </p>
                               </div>
                               <div className="title">
                                 <p className="title">
-                                  <strong>Dessert: {menu.dessert}</strong>
+                                  <strong> {menu.dessert}</strong>
                                 </p>
                               </div>
                               <p className="card-footer">
                                 11:30 &nbsp; | &nbsp; 13:30
                               </p>
+                              <button type="submit" class="btn btn_Menu" onClick={(e) => DeleteMenu(e, menu.id)} >Delete</button>
                             </div>
                           </div>
                         </div>
@@ -153,11 +168,11 @@ const Menu = (props) => {
               </Card>
             ))}
           </Box>
-            <button type="submit" class="btn addMenu" onClick={handleMenu}>Add  menu</button>
-            {showMenuform && <MenuForm hide={handleMenuFormClose} />}
-          </>
+          <button type="submit" class="btn addMenu" onClick={handleMenu}>Add  menu</button>
+          {showMenuform && <MenuForm hide={handleMenuFormClose} fetchMenus={fetchMenus} />}
+        </>
       )}
-      
+
     </Layout>
   );
 };

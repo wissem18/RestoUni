@@ -3,7 +3,6 @@
 import { TimeStampEntity } from 'src/timestamp/timpestamp.entity';
 import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Exclude } from "class-transformer";
-import { v4 as uuid } from "uuid";
 import { Student } from "src/student/entities/student.entity";
 import { Menu } from "src/menu/entities/menu.entity";
 import { Vote } from "src/vote/entities/vote.entity";

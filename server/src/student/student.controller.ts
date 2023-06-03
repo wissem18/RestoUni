@@ -38,7 +38,11 @@ export class StudentController {
   findOne(@Param('id') id: string) {
     return this.studentService.findOne(id);
   }
-
+  @Get('/Resto/:id')
+  @UseGuards(AuthGuard)
+  findResto(@Param('id') id:string){
+    return this.studentService.findResto(id);
+  }
   @Patch(':id')
   @UseGuards(AuthGuard)
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {

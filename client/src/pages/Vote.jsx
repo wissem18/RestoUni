@@ -1,29 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/Layout";
 import { Box, Card, CardActionArea, CardContent } from "@mui/material";
 import VoteCard from "../components/VoteCard";
 import VoteForm from "../components/VoteForm";
 import axios from "axios";
-const Vote = (props) => {
- const [votes, setVotes] = React.useState([]);
+import useResto from "../context/RestoContext";
+import useUser from "../context/UserContext";
+const Vote = () => {
+  const { myResto, setMyResto } = useResto();
+  const { myUser, setMyUser } = useUser();
+  const [votes, setVotes] = React.useState([]);
   const [showVoteform, setShowVoteform] = React.useState(false);
-  React.useEffect(() => {
   const fetchVotes = async () => {
     try {
-      const response = await axios.get('http://localhost:3006/vote/eeb2ec84-d8fe-4505-9184-39c6e91ff092');
-      const votesWithExtractedOptions = await response.data.map((vote) => ({
-        ...vote,
-        options: vote.Options.map((option) => [option.id, option.description]),
-      }));
-  
-      setVotes(votesWithExtractedOptions);   
+      let votesWithExtractedOptions;
+      if (myUser) {
+        await axios.get(`http://localhost:3006/student/Resto/${myUser.id}`).then(async (response) => {
+          console.log(response.data);
+          const resp = await axios.get(`http://localhost:3006/vote/${response.data[0].restaurantId}`);
+          votesWithExtractedOptions = await resp.data.map((vote) => ({
+            ...vote,
+            options: vote.Options.map((option) => [option.id, option.description]),
+          }));
+        })
+      }
+      else if (myResto) {
+        const response = await axios.get(`http://localhost:3006/vote/${myResto.id}`);
+        votesWithExtractedOptions = await response.data.map((vote) => ({
+          ...vote,
+          options: vote.Options.map((option) => [option.id, option.description]),
+        }));
+      }
+      setVotes(votesWithExtractedOptions);
     } catch (error) {
       console.error(error);
     }
   };
-  
-  fetchVotes();
-}, []);
+  React.useEffect(() => {
+    fetchVotes();
+  }, []);
   const handleVote = () => {
     setShowVoteform(true);
   };
@@ -33,7 +48,7 @@ const Vote = (props) => {
   };
   return (
     <Layout >
-      {props.isUser ? (
+      {myUser ? (
 
         <Box
           sx={{
@@ -45,8 +60,8 @@ const Vote = (props) => {
           {votes.map((vote) => (
             <Card key={vote.id} sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
               <CardActionArea>
-                <CardContent> 
-                  <VoteCard name={vote.name} description={vote.description} options={vote.options} isUser={props.isUser} voteId={vote.id} />
+                <CardContent>
+                  <VoteCard name={vote.name} description={vote.description} options={vote.options} voteId={vote.id} />
                 </CardContent>
               </CardActionArea>
             </Card>
@@ -65,7 +80,7 @@ const Vote = (props) => {
               <Card key={vote.id} sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
                 <CardActionArea>
                   <CardContent>
-                    <VoteCard name={vote.name} description={vote.description} options={vote.options} isUser={props.isUser} />
+                    <VoteCard name={vote.name} description={vote.description} options={vote.options} voteId={vote.id} fetchVotes={fetchVotes} />
                   </CardContent>
                 </CardActionArea>
               </Card>
@@ -74,7 +89,7 @@ const Vote = (props) => {
           <button type="submit" className="btn addMenu" onClick={handleVote}>
             Add Vote
           </button>
-          {showVoteform && <VoteForm hide={handleVoteFormClose} />}
+            {showVoteform && <VoteForm hide={handleVoteFormClose} fetchVotes={fetchVotes} />}
         </>
       )}
     </Layout>

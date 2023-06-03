@@ -64,7 +64,6 @@ export class RestaurantService {
       },
       relations: {
         Menus: true,
-        Students: true,
         Votes: true
       }
     }).then(Restaurant => {
